@@ -1,6 +1,6 @@
 ---
 import { nav, person } from "../data/site";
-import { siteBase } from "../lib/url";
+import { asset, siteBase } from "../lib/url";
 
 interface Props {
   /** True on pages other than the index, where the anchors have no targets. */
@@ -44,6 +44,20 @@ const link = (hash: string) => (standalone ? `${home}${hash}` : hash);
           </a>
         ))
       }
+      <a
+        href={asset("snake")}
+        class="ml-1 inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent-soft px-3.5 py-1.5 text-sm text-accent transition-colors duration-200 hover:border-accent/60"
+      >
+        <svg
+          class="h-3.5 w-3.5"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path d="M8 5.5v13l11-6.5z" />
+        </svg>
+        Play
+      </a>
     </nav>
 
     <div class="flex items-center gap-2">
@@ -126,6 +140,15 @@ const link = (hash: string) => (standalone ? `${home}${hash}` : hash);
         </a>
       ))
     }
+    <a
+      href={asset("snake")}
+      class="flex items-center gap-3 border-b border-line-soft py-5 font-display text-3xl tracking-tight text-accent"
+    >
+      <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M8 5.5v13l11-6.5z" />
+      </svg>
+      Play
+    </a>
     <a href={`mailto:${person.email}`} class="btn btn-primary mt-8 justify-center">
       Contact
     </a>
