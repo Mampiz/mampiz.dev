@@ -1,0 +1,315 @@
+---
+interface Props {
+  kind: "birdvision" | "gateway";
+  label: string;
+}
+
+const { kind, label } = Astro.props;
+---
+
+<figure
+  class="overflow-hidden rounded-2xl border border-line bg-surface shadow-[var(--shadow-card)]"
+>
+  <div class="flex items-center gap-2 border-b border-line bg-surface-2 px-4 py-2.5">
+    <span class="flex gap-1.5" aria-hidden="true">
+      <span class="h-2 w-2 rounded-full bg-mute/40"></span>
+      <span class="h-2 w-2 rounded-full bg-mute/40"></span>
+      <span class="h-2 w-2 rounded-full bg-mute/40"></span>
+    </span>
+    <span class="truncate font-mono text-[0.6875rem] text-mute">{label}</span>
+  </div>
+
+  <div class="dg bg-bg-soft p-4 md:p-6">
+    {
+      kind === "birdvision" && (
+        <svg viewBox="0 0 900 360" role="img" aria-label={label} class="w-full">
+          <defs>
+            <marker
+              id="bv-arrow"
+              viewBox="0 0 10 10"
+              refX="9"
+              refY="5"
+              markerWidth="7"
+              markerHeight="7"
+              orient="auto-start-reverse"
+            >
+              <path d="M0 1 L9 5 L0 9 z" class="fill-arrow" />
+            </marker>
+          </defs>
+
+          <g class="stage">
+            <rect x="8" y="86" width="182" height="126" rx="12" />
+            <text class="idx" x="26" y="114">
+              01
+            </text>
+            <text class="ttl" x="26" y="145">
+              Input
+            </text>
+            <text class="det" x="26" y="170">
+              image · video · webcam
+            </text>
+            <text class="det" x="26" y="190">
+              published RTMP cameras
+            </text>
+          </g>
+
+          <g class="stage">
+            <rect x="242" y="86" width="182" height="126" rx="12" />
+            <text class="idx" x="260" y="114">
+              02
+            </text>
+            <text class="ttl" x="260" y="145">
+              Inference
+            </text>
+            <text class="det" x="260" y="170">
+              YOLO12m · FastAPI
+            </text>
+            <text class="det" x="260" y="190">
+              weights loaded once
+            </text>
+          </g>
+
+          <g class="stage">
+            <rect x="476" y="86" width="182" height="126" rx="12" />
+            <text class="idx" x="494" y="114">
+              03
+            </text>
+            <text class="ttl" x="494" y="145">
+              Jobs
+            </text>
+            <text class="det" x="494" y="170">
+              async queue in Postgres
+            </text>
+            <text class="det" x="494" y="190">
+              SHA-256 content cache
+            </text>
+          </g>
+
+          <g class="stage accent">
+            <rect x="710" y="86" width="182" height="126" rx="12" />
+            <text class="idx" x="728" y="114">
+              04
+            </text>
+            <text class="ttl" x="728" y="145">
+              Output
+            </text>
+            <text class="det" x="728" y="170">
+              species · boxes · time
+            </text>
+            <text class="det" x="728" y="190">
+              React SPA, public feed
+            </text>
+          </g>
+
+          <g class="wire">
+            <line x1="198" y1="149" x2="234" y2="149" marker-end="url(#bv-arrow)" />
+            <line x1="432" y1="149" x2="468" y2="149" marker-end="url(#bv-arrow)" />
+            <line x1="666" y1="149" x2="702" y2="149" marker-end="url(#bv-arrow)" />
+          </g>
+
+          <path
+            class="wire dashed"
+            d="M99 212 L99 288 Q99 300 111 300 L789 300 Q801 300 801 288 L801 212"
+            marker-end="url(#bv-arrow)"
+          />
+          <text class="note" x="450" y="331" text-anchor="middle">
+            live path — RTMP → NGINX-RTMP → HLS, detection overlay synced to playback
+          </text>
+
+          <text class="note" x="8" y="48">
+            Four modes, one backend. Every stage bounded: worker pools, semaphores,
+            hard timeouts.
+          </text>
+        </svg>
+      )
+    }
+
+    {
+      kind === "gateway" && (
+        <svg viewBox="0 0 900 400" role="img" aria-label={label} class="w-full">
+          <defs>
+            <marker
+              id="gw-arrow"
+              viewBox="0 0 10 10"
+              refX="9"
+              refY="5"
+              markerWidth="7"
+              markerHeight="7"
+              orient="auto-start-reverse"
+            >
+              <path d="M0 1 L9 5 L0 9 z" class="fill-arrow" />
+            </marker>
+          </defs>
+
+          <g class="stage">
+            <rect x="8" y="150" width="170" height="104" rx="12" />
+            <text class="ttl" x="26" y="192">
+              Client
+            </text>
+            <text class="det" x="26" y="218">
+              POST /v1/chat/completions
+            </text>
+          </g>
+
+          <g class="stage accent">
+            <rect x="252" y="52" width="268" height="300" rx="14" />
+            <text class="idx" x="276" y="88">
+              GO · CONCURRENT
+            </text>
+            <text class="ttl" x="276" y="118">
+              llm-gateway
+            </text>
+
+            <g class="row">
+              <circle cx="282" cy="163" r="3" />
+              <text class="det strong" x="298" y="160">
+                route
+              </text>
+              <text class="det" x="298" y="180">
+                model prefix → provider
+              </text>
+
+              <circle cx="282" cy="223" r="3" />
+              <text class="det strong" x="298" y="220">
+                limit
+              </text>
+              <text class="det" x="298" y="240">
+                Redis token bucket, shared
+              </text>
+
+              <circle cx="282" cy="283" r="3" />
+              <text class="det strong" x="298" y="280">
+                stream
+              </text>
+              <text class="det" x="298" y="300">
+                SSE, token by token
+              </text>
+
+              <circle cx="282" cy="331" r="3" />
+              <text class="det strong" x="298" y="328">
+                cache + metrics
+              </text>
+            </g>
+          </g>
+
+          <g class="stage small">
+            <rect x="620" y="60" width="272" height="76" rx="12" />
+            <text class="ttl sm" x="642" y="96">
+              OpenAI
+            </text>
+            <text class="det" x="642" y="118">
+              gpt- · o1- · o3- · o4-
+            </text>
+          </g>
+
+          <g class="stage small">
+            <rect x="620" y="164" width="272" height="76" rx="12" />
+            <text class="ttl sm" x="642" y="200">
+              Anthropic
+            </text>
+            <text class="det" x="642" y="222">
+              claude-
+            </text>
+          </g>
+
+          <g class="stage small">
+            <rect x="620" y="268" width="272" height="76" rx="12" />
+            <text class="ttl sm" x="642" y="304">
+              Mock provider
+            </text>
+            <text class="det" x="642" y="326">
+              mock- · no key required
+            </text>
+          </g>
+
+          <g class="wire">
+            <line x1="186" y1="202" x2="244" y2="202" marker-end="url(#gw-arrow)" />
+            <path d="M528 202 Q574 202 574 98 L612 98" marker-end="url(#gw-arrow)" />
+            <line x1="528" y1="202" x2="612" y2="202" marker-end="url(#gw-arrow)" />
+            <path d="M528 202 Q574 202 574 306 L612 306" marker-end="url(#gw-arrow)" />
+          </g>
+
+          <text class="note" x="8" y="34">
+            Each provider package owns its own dialect. No vendor vocabulary leaks
+            past it.
+          </text>
+          <text class="note" x="8" y="386">
+            On failure the request falls through to the next provider — backoff, then
+            a circuit breaker.
+          </text>
+        </svg>
+      )
+    }
+  </div>
+</figure>
+
+<style>
+  .dg .stage rect {
+    fill: var(--c-surface);
+    stroke: var(--c-line);
+    stroke-width: 1.25;
+  }
+
+  .dg .stage.accent rect {
+    stroke: color-mix(in oklab, var(--c-accent) 60%, var(--c-line));
+    fill: color-mix(in oklab, var(--c-accent) 7%, var(--c-surface));
+  }
+
+  .dg .idx {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    fill: var(--c-accent);
+  }
+
+  .dg .ttl {
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    fill: var(--c-text);
+  }
+
+  .dg .ttl.sm {
+    font-size: 17px;
+  }
+
+  .dg .det {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    fill: var(--c-dim);
+  }
+
+  .dg .det.strong {
+    fill: var(--c-text);
+    font-weight: 500;
+  }
+
+  .dg .row circle {
+    fill: var(--c-accent);
+  }
+
+  .dg .note {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    fill: var(--c-mute);
+  }
+
+  .dg .wire,
+  .dg .wire line,
+  .dg .wire path,
+  .dg path.wire {
+    stroke: var(--c-mute);
+    stroke-width: 1.25;
+    fill: none;
+  }
+
+  .dg .dashed {
+    stroke-dasharray: 5 5;
+  }
+
+  .dg .fill-arrow {
+    fill: var(--c-mute);
+    stroke: none;
+  }
+</style>

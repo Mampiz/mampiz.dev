@@ -1,0 +1,62 @@
+---
+import { archive, person } from "../data/site";
+import SectionHead from "./SectionHead.astro";
+---
+
+<section id="archive" class="shell scroll-mt-24 border-t border-line py-16 md:py-24">
+  <SectionHead
+    index="04"
+    title="Archive"
+    blurb="Older and smaller repositories, kept public because deleting your history is a strange thing to do."
+  />
+
+  <ul class="mt-10 border-t border-line">
+    {
+      archive.map((item, i) => (
+        <li class="reveal" style={`--reveal-delay:${i * 60}ms`}>
+          <a
+            href={item.url}
+            rel="noopener"
+            class="group grid grid-cols-[1fr_auto] items-center gap-x-6 gap-y-1 border-b border-line py-5 transition-colors duration-300 hover:bg-surface md:grid-cols-[15rem_1fr_9rem_auto] md:px-4"
+          >
+            <span class="font-display text-lg font-medium tracking-tight text-ink transition-colors duration-300 group-hover:text-accent">
+              {item.name}
+            </span>
+            <span class="col-span-2 text-sm text-mute md:col-span-1 md:order-none">
+              {item.note}
+            </span>
+            <span class="label whitespace-nowrap md:text-right">{item.lang} · {item.year}</span>
+            <svg
+              class="hidden h-3.5 w-3.5 text-mute transition-transform duration-300 group-hover:translate-x-1 group-hover:text-accent md:block"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <a href={person.github} rel="noopener" class="link mt-8 inline-flex text-sm text-dim">
+    Everything else on GitHub
+    <svg
+      class="arrow h-3 w-3"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M7 17 17 7M9 7h8v8"></path>
+    </svg>
+  </a>
+</section>

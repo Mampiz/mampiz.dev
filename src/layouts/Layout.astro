@@ -1,0 +1,179 @@
+---
+import "../styles/global.css";
+import { person } from "../data/site";
+import { asset } from "../lib/url";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = `${person.name} — ${person.role}`,
+  description = `${person.tagline} ${person.summary}`,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://example.com");
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={person.name} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href={asset("favicon.svg")} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={asset("media/avatar.jpg")} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(asset("og.png"), canonical)} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+
+    <script is:inline>
+      // Applied before first paint so the page never flashes the wrong theme.
+      (function () {
+        try {
+          var stored = localStorage.getItem("theme");
+          var prefersLight = window.matchMedia(
+            "(prefers-color-scheme: light)",
+          ).matches;
+          var theme = stored || (prefersLight ? "light" : "dark");
+          document.documentElement.dataset.theme = theme;
+        } catch (e) {
+          /* private mode: keep the dark default */
+        }
+      })();
+    </script>
+
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: person.name,
+        jobTitle: person.role,
+        email: `mailto:${person.email}`,
+        url: canonical.href,
+        address: { "@type": "PostalAddress", addressLocality: person.location },
+        sameAs: [person.github, person.linkedin],
+      })}
+    />
+  </head>
+
+  <body>
+    <a
+      href="#work"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-bg"
+      >Skip to work</a
+    >
+    <slot />
+
+    <script>
+      // Scroll reveal. A direct rect check on every scroll event, not an
+      // IntersectionObserver and not rAF-throttled: both dropped elements
+      // during a fast scroll, and a section stuck at opacity 0 is a far worse
+      // failure than a skipped animation. The list only shrinks, and the
+      // listeners detach once everything has been revealed.
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let pending = [...document.querySelectorAll<HTMLElement>(".reveal")];
+
+      const sweep = () => {
+        const limit = reduce ? Infinity : window.innerHeight * 0.92;
+        const still: HTMLElement[] = [];
+        for (const el of pending) {
+          if (el.getBoundingClientRect().top < limit) el.classList.add("is-in");
+          else still.push(el);
+        }
+        pending = still;
+        if (!pending.length) {
+          window.removeEventListener("scroll", sweep);
+          window.removeEventListener("resize", sweep);
+        }
+      };
+
+      sweep();
+      window.addEventListener("scroll", sweep, { passive: true });
+      window.addEventListener("resize", sweep, { passive: true });
+      window.addEventListener("load", sweep);
+
+      // Header: condense on scroll, and mark the section currently in view.
+      const header = document.querySelector<HTMLElement>("[data-header]");
+      const onScroll = () => {
+        header?.toggleAttribute("data-scrolled", window.scrollY > 24);
+      };
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+
+      const links = [
+        ...document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]"),
+      ];
+      const sections = links
+        .map((link) => document.querySelector(link.hash))
+        .filter((el): el is Element => Boolean(el));
+
+      if (sections.length) {
+        const spy = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              const id = `#${entry.target.id}`;
+              links.forEach((link) =>
+                link.toggleAttribute("data-active", link.hash === id),
+              );
+            }
+          },
+          { rootMargin: "-45% 0px -50% 0px" },
+        );
+        sections.forEach((section) => spy.observe(section));
+      }
+
+      // Theme toggle
+      const root = document.documentElement;
+      document
+        .querySelectorAll<HTMLButtonElement>("[data-theme-toggle]")
+        .forEach((button) => {
+          button.addEventListener("click", () => {
+            const next = root.dataset.theme === "light" ? "dark" : "light";
+            root.dataset.theme = next;
+            try {
+              localStorage.setItem("theme", next);
+            } catch (e) {
+              /* nothing to persist to */
+            }
+          });
+        });
+
+      // Mobile menu
+      const menu = document.querySelector<HTMLElement>("[data-menu]");
+      const menuButton = document.querySelector<HTMLButtonElement>("[data-menu-button]");
+      const setMenu = (open: boolean) => {
+        menu?.toggleAttribute("data-open", open);
+        menuButton?.setAttribute("aria-expanded", String(open));
+        document.body.style.overflow = open ? "hidden" : "";
+      };
+      menuButton?.addEventListener("click", () =>
+        setMenu(!menu?.hasAttribute("data-open")),
+      );
+      menu?.querySelectorAll("a").forEach((a) =>
+        a.addEventListener("click", () => setMenu(false)),
+      );
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") setMenu(false);
+      });
+    </script>
+  </body>
+</html>

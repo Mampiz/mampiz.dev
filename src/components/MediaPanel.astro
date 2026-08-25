@@ -1,0 +1,136 @@
+---
+import type { MediaItem } from "../data/site";
+import { asset, thumb } from "../lib/url";
+
+interface Props {
+  items: MediaItem[];
+  label: string;
+}
+
+const { items, label } = Astro.props;
+const first = items[0]!;
+---
+
+<figure data-gallery class="group/panel">
+  <div
+    class="relative overflow-hidden rounded-2xl border border-line bg-surface shadow-[var(--shadow-card)]"
+  >
+    <!-- Window chrome, so a screenshot reads as a captured screen. -->
+    <div
+      class="flex items-center gap-2 border-b border-line bg-surface-2 px-4 py-2.5"
+    >
+      <span class="flex gap-1.5" aria-hidden="true">
+        <span class="h-2 w-2 rounded-full bg-mute/40"></span>
+        <span class="h-2 w-2 rounded-full bg-mute/40"></span>
+        <span class="h-2 w-2 rounded-full bg-mute/40"></span>
+      </span>
+      <span
+        data-gallery-caption
+        class="truncate font-mono text-[0.6875rem] text-mute"
+      >
+        {first.caption ?? label}
+      </span>
+    </div>
+
+    <div class="relative aspect-[16/10] bg-bg-soft">
+      <img
+        data-gallery-image
+        src={asset(`media/${first.poster ?? first.src}`)}
+        data-full={first.poster ? asset(`media/${first.src}`) : ""}
+        alt={first.alt}
+        loading="lazy"
+        decoding="async"
+        class="h-full w-full object-contain"
+      />
+
+      <!-- Heavy recordings stay behind a poster until asked for. -->
+      <button
+        data-gallery-play
+        type="button"
+        hidden={!first.poster}
+        class="absolute inset-0 grid place-items-center bg-bg/45 backdrop-blur-[2px] transition-opacity duration-300 hover:bg-bg/25"
+      >
+        <span
+          class="inline-flex items-center gap-2.5 rounded-full border border-line bg-bg/90 px-4 py-2.5 text-sm font-medium text-ink shadow-[var(--shadow-card)]"
+        >
+          <svg
+            class="h-3.5 w-3.5 text-accent"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path d="M8 5.5v13l11-6.5z"></path>
+          </svg>
+          Play the recording
+        </span>
+      </button>
+    </div>
+  </div>
+
+  {
+    items.length > 1 && (
+      <div class="mt-3 flex gap-2.5 overflow-x-auto pb-1">
+        {items.map((item, i) => (
+          <button
+            data-gallery-thumb
+            data-src={asset(`media/${item.src}`)}
+            data-poster={asset(`media/${item.poster ?? item.src}`)}
+            data-has-poster={item.poster ? "true" : "false"}
+            data-alt={item.alt}
+            data-caption={item.caption ?? label}
+            data-selected={i === 0 ? "true" : undefined}
+            type="button"
+            aria-label={`Show: ${item.caption ?? item.alt}`}
+            class="relative h-14 w-[5.5rem] shrink-0 overflow-hidden rounded-lg border border-line opacity-50 transition duration-200 hover:opacity-90 data-[selected]:border-accent data-[selected]:opacity-100 md:h-16 md:w-24"
+          >
+            <img
+              src={thumb(item.src)}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              class="h-full w-full object-cover object-left-top"
+            />
+          </button>
+        ))}
+      </div>
+    )
+  }
+</figure>
+
+<script>
+  // One handler for every gallery on the page.
+  document.querySelectorAll<HTMLElement>("[data-gallery]").forEach((gallery) => {
+    const image = gallery.querySelector<HTMLImageElement>("[data-gallery-image]");
+    const caption = gallery.querySelector<HTMLElement>("[data-gallery-caption]");
+    const play = gallery.querySelector<HTMLButtonElement>("[data-gallery-play]");
+    const thumbs = [
+      ...gallery.querySelectorAll<HTMLButtonElement>("[data-gallery-thumb]"),
+    ];
+    if (!image) return;
+
+    const reveal = () => {
+      const full = image.dataset.full;
+      if (!full) return;
+      image.src = full;
+      image.dataset.full = "";
+      if (play) play.hidden = true;
+    };
+
+    play?.addEventListener("click", reveal);
+
+    thumbs.forEach((thumb) => {
+      thumb.addEventListener("click", () => {
+        thumbs.forEach((other) =>
+          other.toggleAttribute("data-selected", other === thumb),
+        );
+
+        const hasPoster = thumb.dataset.hasPoster === "true";
+        image.src = hasPoster ? thumb.dataset.poster! : thumb.dataset.src!;
+        image.dataset.full = hasPoster ? thumb.dataset.src! : "";
+        image.alt = thumb.dataset.alt ?? "";
+        if (caption) caption.textContent = thumb.dataset.caption ?? "";
+        if (play) play.hidden = !hasPoster;
+      });
+    });
+  });
+</script>

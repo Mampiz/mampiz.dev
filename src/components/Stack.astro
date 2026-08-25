@@ -1,0 +1,32 @@
+---
+import { toolbox } from "../data/site";
+import SectionHead from "./SectionHead.astro";
+---
+
+<section id="stack" class="shell scroll-mt-24 border-t border-line py-16 md:py-24">
+  <SectionHead
+    index="02"
+    title="Toolbox"
+    blurb="Sorted by how often I actually reach for it, not by how it looks on a CV."
+  />
+
+  <div class="mt-12 grid gap-px overflow-hidden rounded-2xl border border-line bg-line">
+    {
+      toolbox.map((group, i) => (
+        <div
+          class="reveal grid gap-5 bg-bg px-6 py-8 md:grid-cols-[15rem_1fr] md:items-start md:gap-10 md:px-8"
+          style={`--reveal-delay:${i * 70}ms`}
+        >
+          <h3 class="font-mono text-xs uppercase tracking-[0.16em] text-mute">
+            {group.title}
+          </h3>
+          <ul class="flex flex-wrap gap-2">
+            {group.items.map((item) => (
+              <li class="chip !text-[0.75rem] !text-ink">{item}</li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</section>

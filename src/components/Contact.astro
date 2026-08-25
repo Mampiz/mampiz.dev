@@ -1,0 +1,127 @@
+---
+import { person } from "../data/site";
+
+const links = [
+  { label: "Email", value: person.email, href: `mailto:${person.email}` },
+  { label: "LinkedIn", value: "josep-mampel-marques", href: person.linkedin },
+  { label: "GitHub", value: `@${person.handle}`, href: person.github },
+];
+
+const year = new Date().getFullYear();
+---
+
+<section
+  id="contact"
+  class="relative scroll-mt-24 overflow-hidden border-t border-line pt-20 md:pt-28"
+>
+  <div
+    class="glow bottom-[-16rem] left-1/2 h-[24rem] w-[42rem] -translate-x-1/2"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="shell relative">
+    <span class="label reveal">05 — Contact</span>
+
+    <h2
+      class="reveal mt-6 max-w-[16ch] font-display text-[clamp(2.4rem,7vw,5rem)] font-semibold leading-[0.96] tracking-[-0.045em]"
+      style="--reveal-delay:60ms"
+    >
+      Let's build something that stays up.
+    </h2>
+
+    <p
+      class="reveal mt-6 max-w-xl text-lg text-dim"
+      style="--reveal-delay:120ms"
+    >
+      Platform, infrastructure or backend roles — in {person.location} or remote.
+      Also happy to talk about why <code
+        class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[0.85em] text-ink"
+        >latest</code
+      > is a terrible image tag.
+    </p>
+
+    <a
+      href={`mailto:${person.email}`}
+      class="reveal group mt-10 inline-flex items-center gap-4 font-display text-[clamp(1.25rem,3.2vw,2.25rem)] font-medium tracking-[-0.03em]"
+      style="--reveal-delay:180ms"
+    >
+      <span class="border-b border-line pb-1 transition-colors duration-300 group-hover:border-accent"
+        >{person.email}</span
+      >
+      <span
+        class="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-line transition duration-300 group-hover:border-accent group-hover:bg-accent group-hover:text-accent-ink md:h-14 md:w-14"
+      >
+        <svg
+          class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 md:h-5 md:w-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M7 17 17 7M9 7h8v8"></path>
+        </svg>
+      </span>
+    </a>
+
+    <ul
+      class="reveal mt-16 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-3"
+      style="--reveal-delay:220ms"
+    >
+      {
+        links.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              rel="noopener"
+              class="group block bg-bg px-6 py-6 transition-colors duration-300 hover:bg-surface"
+            >
+              <span class="label">{item.label}</span>
+              <span class="mt-2 flex items-center gap-2 truncate text-sm text-ink">
+                {item.value}
+                <svg
+                  class="h-3 w-3 shrink-0 text-mute transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M7 17 17 7M9 7h8v8" />
+                </svg>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <footer
+    class="shell relative mt-20 flex flex-wrap items-center justify-between gap-4 border-t border-line py-8"
+  >
+    <p class="font-mono text-[0.6875rem] text-mute">
+      © {year} {person.name} · Built with Astro, deployed on GitHub Pages
+    </p>
+    <a href="#top" class="link font-mono text-[0.6875rem] text-mute">
+      Back to top
+      <svg
+        class="h-3 w-3"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M12 19V5M6 11l6-6 6 6"></path>
+      </svg>
+    </a>
+  </footer>
+</section>
