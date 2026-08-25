@@ -112,15 +112,21 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://example.com
 
       // Header: condense on scroll, and mark the section currently in view.
       const header = document.querySelector<HTMLElement>("[data-header]");
+      const links = [
+        ...document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]"),
+      ];
+
       const onScroll = () => {
         header?.toggleAttribute("data-scrolled", window.scrollY > 24);
+        // Back at the top, nothing is the current section — otherwise the last
+        // one visited stays highlighted and the nav lies about where you are.
+        if (window.scrollY < 200) {
+          links.forEach((link) => link.removeAttribute("data-active"));
+        }
       };
       onScroll();
       window.addEventListener("scroll", onScroll, { passive: true });
 
-      const links = [
-        ...document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]"),
-      ];
       const sections = links
         .map((link) => document.querySelector(link.hash))
         .filter((el): el is Element => Boolean(el));
