@@ -1,5 +1,15 @@
 ---
 import { nav, person } from "../data/site";
+import { siteBase } from "../lib/url";
+
+interface Props {
+  /** True on pages other than the index, where the anchors have no targets. */
+  standalone?: boolean;
+}
+
+const { standalone = false } = Astro.props;
+const home = `${siteBase}/`;
+const link = (hash: string) => (standalone ? `${home}${hash}` : hash);
 ---
 
 <div class="progress" data-progress aria-hidden="true"></div>
@@ -10,7 +20,7 @@ import { nav, person } from "../data/site";
 >
   <div class="shell flex h-16 items-center justify-between gap-6 md:h-[4.5rem]">
     <a
-      href="#top"
+      href={standalone ? home : "#top"}
       class="group flex items-baseline gap-2.5 font-display text-[0.95rem] font-semibold tracking-tight"
     >
       <span
@@ -26,7 +36,7 @@ import { nav, person } from "../data/site";
       {
         nav.map((item) => (
           <a
-            href={item.href}
+            href={link(item.href)}
             data-nav-link
             class="rounded-full px-3.5 py-1.5 text-sm text-dim transition-colors duration-200 hover:text-ink data-[active]:bg-surface data-[active]:text-ink"
           >
@@ -108,7 +118,7 @@ import { nav, person } from "../data/site";
     {
       nav.map((item, i) => (
         <a
-          href={item.href}
+          href={link(item.href)}
           class="border-b border-line-soft py-5 font-display text-3xl tracking-tight text-ink"
         >
           <span class="label mr-4 align-middle">0{i + 1}</span>

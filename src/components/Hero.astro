@@ -24,9 +24,9 @@ import ProjectPanels from "./ProjectPanels.astro";
       class="reveal mt-8 max-w-[19ch] font-display text-[clamp(2.6rem,7.6vw,5.75rem)] font-semibold leading-[0.94] tracking-[-0.045em]"
       style="--reveal-delay:60ms"
     >
-      I build the parts of a system<br class="hidden sm:block" />
+      I build things, then try to<br class="hidden sm:block" />
       <span class="relative whitespace-nowrap"
-        >nobody sees<svg
+        >break them<svg
           class="absolute -bottom-1 left-0 h-[0.35em] w-full text-accent"
           viewBox="0 0 300 12"
           preserveAspectRatio="none"
@@ -94,6 +94,13 @@ import ProjectPanels from "./ProjectPanels.astro";
 
   <!-- One cover per project, straight away. -->
   <div class="mt-12 md:mt-14">
+    <div class="shell reveal mb-4" style="--reveal-delay:240ms">
+      <p class="flex items-center gap-2.5 font-mono text-[0.75rem] text-mute">
+        <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true"
+        ></span>
+        Some Go, some Kubernetes, one bird detector.
+      </p>
+    </div>
     <ProjectPanels />
   </div>
 </section>

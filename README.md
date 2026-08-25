@@ -23,7 +23,7 @@ Node 22 or newer.
 
 Everything a visitor reads lives in [`src/data/site.ts`](src/data/site.ts):
 personal details, the project case studies with their metrics and stack, the
-toolbox and the archive list. Adding a project is one object in the `projects`
+team-work entry, the toolbox and the archive list. Adding a project is one object in the `projects`
 array — the page renders the section, the metric strip and the entry in the hero
 rail from it.
 

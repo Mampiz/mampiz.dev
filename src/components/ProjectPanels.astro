@@ -13,14 +13,15 @@ import { thumb } from "../lib/url";
               <img
                 src={thumb(project.cover.src)}
                 alt=""
-                loading="lazy"
+                loading="eager"
+                fetchpriority="high"
                 decoding="async"
                 class="panel-media"
               />
             </>
           ) : (
             <span class="panel-figure" aria-hidden="true">
-              <span class="font-display text-[clamp(2.75rem,5vw,4rem)] font-semibold leading-none tracking-[-0.04em] text-accent">
+              <span class="font-display text-[clamp(1.9rem,6vw,4rem)] font-semibold leading-none tracking-[-0.04em] text-accent">
                 {project.cover.figure}
               </span>
               <span class="max-w-[15rem] font-mono text-[0.6875rem] leading-relaxed text-dim">

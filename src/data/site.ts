@@ -7,9 +7,9 @@ export const person = {
   email: "josepmampel20@gmail.com",
   github: "https://github.com/Mampiz",
   linkedin: "https://linkedin.com/in/josep-mampel-marques",
-  tagline: "Go, Kubernetes, and the parts of a system nobody sees.",
+  tagline: "Some Go, some Kubernetes, one bird detector.",
   summary:
-    "Operators, internal platforms and pipelines that keep working when nobody is watching.",
+    "A Kubernetes operator, an internal developer platform, a computer vision pipeline and a concurrent Go gateway.",
 } as const;
 
 export type Metric = { value: string; label: string };
@@ -242,6 +242,7 @@ export const toolbox = [
     title: "Also comfortable with",
     items: [
       "Python",
+      "C++",
       "TypeScript",
       "React",
       "PostgreSQL",
@@ -257,6 +258,53 @@ export const toolbox = [
   },
   { title: "Currently learning", items: ["Terraform"] },
 ];
+
+/**
+ * A team project from the degree. Listed separately from the solo work and
+ * described by what I actually merged, which is the only honest way to put a
+ * shared repository on a portfolio.
+ */
+export const teamwork = {
+  name: "Neby",
+  kicker: "Community services platform · Team project",
+  year: "2024",
+  badge: "Contributor",
+  headline:
+    "Neighbours trade services with each other, paid in a currency that only exists inside the app.",
+  body: [
+    "Built by a team of eight during the degree. Neighbours publish the services they offer or need, pay each other in the platform's own currency, rate the result, and collect achievements along the way. Three repositories make one product: a C++20 REST API on Crow, a TypeScript frontend, and a devops repository holding the Compose files, the NGINX configuration and the database seeds for every environment.",
+    "It is the only C++ backend I have worked on, and the one place where I learned what a code review actually costs when six people are touching the same controllers.",
+  ],
+  did: [
+    "The user endpoints: fetch a user, delete a user by id, and delete your own account, each with its own authorisation rule.",
+    "Registration validation, so a duplicate account is rejected in the auth controller instead of blowing up on a database constraint.",
+    "A shared error helper the other controllers reused, so the API stopped inventing a new error shape per route.",
+    "The GoogleTest suite for user deletion: seven cases over three fixtures, covering admin versus neighbour, invalid and missing ids, and a delete attempted across community boundaries.",
+    "The claim-achievement endpoint in the gamification system.",
+    "Reviewing and merging teammates' pull requests, including the ratings and notification work.",
+  ],
+  metrics: [
+    { value: "10", label: "pull requests merged" },
+    { value: "8", label: "people on the team" },
+    { value: "7", label: "test cases on one endpoint" },
+    { value: "3", label: "repos, one product" },
+  ],
+  stack: [
+    "C++20",
+    "Crow",
+    "libpqxx",
+    "PostgreSQL",
+    "JWT",
+    "GoogleTest",
+    "CMake",
+    "Docker",
+    "NGINX",
+  ],
+  links: [
+    { label: "backend", url: "https://github.com/Neby-Services/backend" },
+    { label: "devops", url: "https://github.com/Neby-Services/devops" },
+  ],
+};
 
 export const archive = [
   {
@@ -291,6 +339,7 @@ export const archive = [
 
 export const nav = [
   { href: "#work", label: "Work" },
+  { href: "#team", label: "Team" },
   { href: "#stack", label: "Stack" },
   { href: "#about", label: "About" },
   { href: "#contact", label: "Contact" },

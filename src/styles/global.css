@@ -303,8 +303,8 @@
 .glow {
   position: absolute;
   border-radius: 999px;
-  filter: blur(90px);
-  background: var(--c-glow);
+  filter: blur(50px);
+  background: radial-gradient(closest-side, var(--c-glow), transparent 100%);
   pointer-events: none;
 }
 
@@ -440,10 +440,28 @@
   }
 }
 
+/*
+ * On a phone a panel is barely 200px wide, so the figure and the label fight
+ * for the same space. The figure moves to the top, the kicker steps out, and
+ * the panel gets a real minimum height instead of a ratio.
+ */
 @media (max-width: 767px) {
+  .panel {
+    aspect-ratio: auto;
+    min-height: 15.5rem;
+  }
+
+  .panel-figure {
+    justify-content: flex-start;
+    padding: 1.25rem 1.25rem 1rem;
+  }
+
+  .panel-meta {
+    padding-top: 2.75rem;
+  }
+
   .panel-kicker {
-    max-height: 2.5rem;
-    opacity: 1;
+    display: none;
   }
 }
 
