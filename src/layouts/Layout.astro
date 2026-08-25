@@ -9,7 +9,7 @@ interface Props {
 }
 
 const {
-  title = `${person.name} — ${person.role}`,
+  title = `${person.name} · ${person.role}`,
   description = `${person.tagline} ${person.summary}`,
 } = Astro.props;
 
@@ -116,9 +116,19 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://example.com
         ...document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]"),
       ];
 
+      const progress = document.querySelector<HTMLElement>("[data-progress]");
+
       const onScroll = () => {
         header?.toggleAttribute("data-scrolled", window.scrollY > 24);
-        // Back at the top, nothing is the current section — otherwise the last
+
+        if (progress) {
+          const scrollable =
+            document.documentElement.scrollHeight - window.innerHeight;
+          const ratio = scrollable > 0 ? window.scrollY / scrollable : 0;
+          progress.style.transform = `scaleX(${Math.min(ratio, 1)})`;
+        }
+
+        // Back at the top, nothing is the current section. Otherwise the last
         // one visited stays highlighted and the nav lies about where you are.
         if (window.scrollY < 200) {
           links.forEach((link) => link.removeAttribute("data-active"));

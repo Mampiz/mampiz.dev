@@ -2,7 +2,6 @@
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
-import SectionHead from "../components/SectionHead.astro";
 import ProjectSection from "../components/ProjectSection.astro";
 import Stack from "../components/Stack.astro";
 import About from "../components/About.astro";
@@ -17,20 +16,12 @@ import { projects } from "../data/site";
   <main>
     <Hero />
 
-    <section id="work" class="shell scroll-mt-24 pt-24 md:pt-32">
-      <SectionHead
-        index="01"
-        title="Selected work"
-        blurb="Four systems, each one running and measured. Every number below came out of a benchmark or a coverage report, not out of a feeling."
-      />
-
-      <div class="mt-14 md:mt-16">
-        {
-          projects.map((project, i) => (
-            <ProjectSection project={project} flip={i % 2 === 1} />
-          ))
-        }
-      </div>
+    <section id="work" class="shell scroll-mt-24 pt-20 md:pt-24">
+      {
+        projects.map((project, i) => (
+          <ProjectSection project={project} flip={i % 2 === 1} />
+        ))
+      }
     </section>
 
     <Stack />

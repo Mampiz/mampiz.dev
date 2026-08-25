@@ -18,20 +18,19 @@ const loop = [...rail, ...rail];
 ---
 
 <section id="top" class="relative overflow-hidden pt-28 md:pt-36">
-  <div class="grid-bg" aria-hidden="true"></div>
   <div
-    class="glow left-1/2 top-[-14rem] h-[26rem] w-[46rem] -translate-x-1/2 opacity-70"
+    class="glow left-1/2 top-[-16rem] h-[28rem] w-[50rem] -translate-x-1/2 opacity-90"
     aria-hidden="true"
   >
   </div>
 
   <div class="shell relative">
     <div
-      class="reveal inline-flex items-center gap-2.5 rounded-full border border-line bg-surface/60 px-3.5 py-1.5 backdrop-blur"
+      class="reveal inline-flex items-center gap-2.5 rounded-full border border-accent/25 bg-accent-soft px-3.5 py-1.5"
     >
-      <span class="pulse-dot" aria-hidden="true"></span>
-      <span class="font-mono text-[0.6875rem] tracking-[0.14em] uppercase text-dim">
-        {person.location} · {person.availability}
+      <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+      <span class="font-mono text-[0.6875rem] tracking-[0.14em] uppercase text-accent">
+        {person.location}
       </span>
     </div>
 
@@ -62,10 +61,10 @@ const loop = [...rail, ...rail];
         class="reveal max-w-2xl text-[1.0625rem] leading-relaxed text-dim md:col-span-7 md:text-lg"
         style="--reveal-delay:140ms"
       >
-        Software engineer in {person.location}. Embedded automotive code by day —
-        bootloaders, AUTOSAR, secure boot — and Kubernetes controllers by night.
-        Both jobs are the same job: make the thing underneath reliable enough that
-        nobody has to think about it.
+        I write Go and build the parts of a system nobody sees: an operator that
+        keeps a workload matching its spec, a portal that turns a form into a
+        running service, a vision pipeline that names the birds at a drinking
+        trough. Everything here runs, and every number on this page is measured.
       </p>
 
       <div
@@ -119,7 +118,7 @@ const loop = [...rail, ...rail];
             href={item.href}
             aria-hidden={i >= rail.length ? "true" : undefined}
             tabindex={i >= rail.length ? -1 : undefined}
-            class="group relative block h-[8.5rem] w-[15rem] shrink-0 overflow-hidden rounded-xl border border-line bg-surface md:h-[11rem] md:w-[19.5rem]"
+            class="group relative block h-[8.5rem] w-[15rem] shrink-0 overflow-hidden rounded-xl border border-line bg-surface transition-colors duration-300 hover:border-accent/60 md:h-[11rem] md:w-[19.5rem]"
           >
             <img
               src={thumb(item.src)}
@@ -129,7 +128,7 @@ const loop = [...rail, ...rail];
               class="h-full w-full object-cover object-left-top opacity-80 transition duration-500 group-hover:scale-[1.03] group-hover:opacity-100"
             />
             <span class="absolute inset-x-0 bottom-0 block truncate bg-gradient-to-t from-black/90 via-black/60 to-transparent px-3 pb-2.5 pt-8 font-mono text-[0.625rem] tracking-wide text-white/70">
-              <span class="text-white">{item.name}</span> — {item.caption}
+              <span class="text-accent">{item.name}</span> · {item.caption}
             </span>
           </a>
         ))

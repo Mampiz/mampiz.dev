@@ -1,70 +1,70 @@
 ---
-import { person } from "../data/site";
+import { person, principles } from "../data/site";
 import { thumb } from "../lib/url";
 import SectionHead from "./SectionHead.astro";
 
-// The analogy the whole CV hangs on: the same discipline, two industries.
-const rosetta = [
-  { embedded: "Signed firmware", cloud: "Signed container images" },
-  { embedded: "Bootloader refusing unverified code", cloud: "Admission webhook" },
-  { embedded: "Watchdog timer", cloud: "Liveness probe" },
-];
+/** Escape, then turn `backticks` into inline code. */
+function richText(input: string): string {
+  const escaped = input
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+  return escaped.replace(
+    /`([^`]+)`/g,
+    '<code class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[0.85em] text-accent">$1</code>',
+  );
+}
 ---
 
 <section id="about" class="shell scroll-mt-24 border-t border-line py-16 md:py-24">
-  <SectionHead index="03" title="About" />
+  <SectionHead title="About" />
 
   <div class="mt-12 grid gap-12 lg:grid-cols-12 lg:gap-16">
     <div class="reveal lg:col-span-7">
       <div class="space-y-6 text-[1.0625rem] leading-relaxed text-dim">
         <p>
-          I got into this because I liked taking things apart to see why they broke.
-          That instinct led me to automotive: bootloaders, AUTOSAR, diagnostics,
-          secure boot — a world where you can't just redeploy on a Friday afternoon,
-          because your code is now inside somebody's car doing 120 on the AP-7.
+          I got into this because I liked taking things apart to see why they
+          broke, and that never really stopped. Almost everything I build now sits
+          underneath something else: a controller, a portal, a pipeline. The parts
+          nobody notices until they fail.
         </p>
         <p>
-          Somewhere along the way I found platform engineering and realised the cloud
-          people had reinvented everything I already knew, but with better tooling
-          and much nicer error messages. So I do both now, and I'm leaning
-          cloud-ward.
+          I studied Computer Engineering at EPSEVG, UPC, and finished with
+          <a href="#birdvision" class="text-ink underline decoration-accent decoration-2 underline-offset-4 transition-colors hover:text-accent">BirdVision</a>,
+          a detection platform built with a local environmental association. Since
+          then most of my time has gone into Go and Kubernetes, learned the only
+          way I trust: by building the kind of thing Kubernetes is meant to run,
+          and then trying to break it.
         </p>
         <p>
-          What carries across is the habit: assume the thing will fail, decide in
-          advance what it does then, and measure instead of guessing. It is why my
-          operator publishes its own metrics, why the platform's README documents the
-          half-failure case, and why the numbers on this page come from benchmarks I
-          ran rather than from a feeling.
+          What I care about is the habit underneath. Assume it will fail, decide in
+          advance what it does then, and measure instead of guessing. That is why
+          the operator publishes its own metrics, why the platform documents its
+          half-failure case, and why every figure on this page came out of a
+          benchmark or a coverage report.
         </p>
       </div>
 
       <div class="mt-10 overflow-hidden rounded-2xl border border-line">
-        <div
-          class="flex items-center justify-between gap-4 border-b border-line bg-surface-2 px-5 py-3"
-        >
-          <span class="label">Same idea, different industry</span>
+        <div class="border-b border-line bg-surface-2 px-5 py-3">
+          <span class="label">Rules I keep coming back to</span>
         </div>
         {
-          rosetta.map((row) => (
-            <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 border-b border-line-soft px-5 py-4 last:border-b-0 md:gap-6">
-              <span class="font-mono text-[0.75rem] leading-snug text-dim">
-                {row.embedded}
+          principles.map((item, i) => (
+            <div class="flex gap-4 border-b border-line-soft px-5 py-5 last:border-b-0 md:gap-5">
+              <span class="mt-0.5 font-mono text-[0.6875rem] text-accent">
+                {String(i + 1).padStart(2, "0")}
               </span>
-              <svg
-                class="h-3.5 w-3.5 shrink-0 text-accent"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M5 12h14M13 6l6 6-6 6" />
-              </svg>
-              <span class="font-mono text-[0.75rem] leading-snug text-ink">
-                {row.cloud}
-              </span>
+              <div>
+                <p
+                  class="text-[0.9375rem] font-medium leading-snug text-ink"
+                  set:html={richText(item.rule)}
+                />
+                <p
+                  class="mt-1.5 text-[0.8125rem] leading-relaxed text-mute"
+                  set:html={richText(item.from)}
+                />
+              </div>
             </div>
           ))
         }
@@ -83,28 +83,21 @@ const rosetta = [
           class="aspect-square w-full object-cover"
         />
         <dl class="divide-y divide-[var(--c-line-soft)]">
-          <div class="flex items-center justify-between px-5 py-3.5">
+          <div class="flex items-center justify-between gap-4 px-5 py-3.5">
             <dt class="label">Based in</dt>
             <dd class="text-sm text-ink">{person.location}</dd>
           </div>
-          <div class="flex items-center justify-between px-5 py-3.5">
+          <div class="flex items-center justify-between gap-4 px-5 py-3.5">
             <dt class="label">Degree</dt>
             <dd class="text-sm text-ink">Computer Engineering, UPC</dd>
           </div>
-          <div class="flex items-center justify-between px-5 py-3.5">
-            <dt class="label">Day job</dt>
-            <dd class="text-sm text-ink">Automotive firmware</dd>
+          <div class="flex items-center justify-between gap-4 px-5 py-3.5">
+            <dt class="label">Mostly writing</dt>
+            <dd class="text-sm text-accent">Go</dd>
           </div>
-          <div class="flex items-center justify-between px-5 py-3.5">
+          <div class="flex items-center justify-between gap-4 px-5 py-3.5">
             <dt class="label">Languages</dt>
             <dd class="text-sm text-ink">Catalan · Spanish · English</dd>
-          </div>
-          <div class="flex items-center justify-between px-5 py-3.5">
-            <dt class="label">Status</dt>
-            <dd class="flex items-center gap-2 text-sm text-ink">
-              <span class="pulse-dot" aria-hidden="true"></span>
-              {person.availability}
-            </dd>
           </div>
         </dl>
       </div>

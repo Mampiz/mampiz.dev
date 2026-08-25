@@ -113,7 +113,7 @@ const { kind, label } = Astro.props;
             marker-end="url(#bv-arrow)"
           />
           <text class="note" x="450" y="331" text-anchor="middle">
-            live path — RTMP → NGINX-RTMP → HLS, detection overlay synced to playback
+            live path: RTMP → NGINX-RTMP → HLS, detection overlay synced to playback
           </text>
 
           <text class="note" x="8" y="48">
@@ -234,8 +234,8 @@ const { kind, label } = Astro.props;
             past it.
           </text>
           <text class="note" x="8" y="386">
-            On failure the request falls through to the next provider — backoff, then
-            a circuit breaker.
+            On failure the request falls through to the next provider: backoff,
+            then a circuit breaker.
           </text>
         </svg>
       )

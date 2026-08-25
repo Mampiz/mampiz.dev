@@ -2,16 +2,14 @@ export const person = {
   name: "Josep Mampel Marqués",
   short: "Josep Mampel",
   handle: "Mampiz",
-  role: "Software & platform engineer",
+  role: "Software engineer",
   location: "Barcelona",
-  availability: "Open to remote",
   email: "josepmampel20@gmail.com",
   github: "https://github.com/Mampiz",
   linkedin: "https://linkedin.com/in/josep-mampel-marques",
-  tagline:
-    "Embedded automotive code by day, Kubernetes controllers by night.",
+  tagline: "Go, Kubernetes, and the parts of a system nobody sees.",
   summary:
-    "I build the layer other engineers stand on — operators, platforms and pipelines that keep working when nobody is watching.",
+    "Operators, internal platforms and pipelines that keep working when nobody is watching.",
 } as const;
 
 export type Metric = { value: string; label: string };
@@ -50,11 +48,11 @@ export const projects: Project[] = [
     index: "01",
     name: "webapp-operator",
     kicker: "Kubernetes operator",
-    headline: "One resource in. A whole workload out — and kept that way.",
+    headline: "One resource in. A whole workload out, and kept that way.",
     year: "2026",
     body: [
       "You write a small `WebApp` resource: an image, a port, how many replicas. The controller reconciles it into a Deployment, a Service, a HorizontalPodAutoscaler and a PodDisruptionBudget, then keeps them matching the spec forever. Edit a child by hand and the next reconcile puts it back.",
-      "The interesting part is the parts that refuse. An admission webhook rejects `:latest` and untagged images, because an operator that forbids mutable tags for its operands should hold itself to the same rule. Status conditions report what is actually true — including `Available=False` when the image does not exist. Two API versions are served through a conversion webhook that completes inconsistent stored data instead of rejecting it.",
+      "The interesting part is the parts that refuse. An admission webhook rejects `:latest` and untagged images, because an operator that forbids mutable tags for its operands should hold itself to the same rule. Status conditions report what is actually true, including `Available=False` when the image does not exist. Two API versions are served through a conversion webhook that completes inconsistent stored data instead of rejecting it.",
     ],
     metrics: [
       { value: "p95 50ms", label: "reconcile at 250 objects" },
@@ -101,8 +99,8 @@ export const projects: Project[] = [
       "Fill in a form. The repository and the running service are already there.",
     year: "2026",
     body: [
-      "One step produces a GitHub repository with CI, a container build and health endpoints — and a live workload in Kubernetes. No manifest to copy, no second tool, no ticket to the platform team. The catalog entry gets a tab showing the real state of the cluster.",
-      "Underneath, the scaffolder writes a `WebApp` custom resource and hands it to my own operator, so the two projects are one system: the portal is the front door, the controller does the reconciling. The section of the README I care about most is the one on what happens when it half-fails — a repository created but the cluster apply rejected. That is where the engineering actually is.",
+      "One step produces a GitHub repository with CI, a container build and health endpoints, plus a live workload in Kubernetes. No manifest to copy, no second tool, no ticket to the platform team. The catalog entry gets a tab showing the real state of the cluster.",
+      "Underneath, the scaffolder writes a `WebApp` custom resource and hands it to my own operator, so the two projects are one system: the portal is the front door, the controller does the reconciling. The part of the README I care about most is the one on what happens when it half-fails, when a repository is created but the cluster apply is rejected. That is where the engineering actually is.",
     ],
     metrics: [
       { value: "~75 s", label: "cold bootstrap to ready cluster" },
@@ -150,10 +148,10 @@ export const projects: Project[] = [
     name: "BirdVision",
     kicker: "Computer vision platform · Final degree project",
     headline: "Point a camera at a drinking trough. Get species, place and time.",
-    year: "2025 — 2026",
+    year: "2025–2026",
     body: [
       "My final degree project at EPSEVG · UPC, built with the environmental association Alytes for outreach and education. It is a whole platform rather than a model: dataset preparation, two-stage YOLO12 training, a GPU-aware FastAPI inference service, asynchronous video jobs, and an RTMP→HLS pipeline that draws boxes on a live stream.",
-      "Four modes share one backend — image upload, async video analysis, the browser webcam, and published RTMP cameras. Video jobs are content-addressed (`SHA-256(file : conf : stride)`), so re-uploading the same clip returns instantly, even for a different user, and any job still queued survives a backend restart. Every stage is bounded: worker pools, semaphores, a sliding-window rate limiter and hard timeouts on both inference and FFmpeg.",
+      "Four modes share one backend: image upload, async video analysis, the browser webcam, and published RTMP cameras. Video jobs are content-addressed (`SHA-256(file : conf : stride)`), so re-uploading the same clip returns instantly, even for a different user, and any job still queued survives a backend restart. Every stage is bounded: worker pools, semaphores, a sliding-window rate limiter and hard timeouts on both inference and FFmpeg.",
     ],
     metrics: [
       { value: "101", label: "bird species detected" },
@@ -189,7 +187,7 @@ export const projects: Project[] = [
     year: "2026",
     status: "In progress",
     body: [
-      "A gateway in front of multiple model providers: prefix routing, automatic failover, distributed rate limiting, response caching, streaming and metrics — behind a single OpenAI-compatible `/v1/chat/completions`.",
+      "A gateway in front of multiple model providers: prefix routing, automatic failover, distributed rate limiting, response caching, streaming and metrics, all behind a single OpenAI-compatible `/v1/chat/completions`.",
       "Every vendor speaks its own dialect, so each provider package owns the translation to and from the gateway's canonical schema and no vendor vocabulary leaks past it. Fields the gateway does not model are forwarded rather than dropped. It exists mostly as an excuse to write concurrent Go that is harder than a worker-pool tutorial: goroutines and channels for SSE streaming, a Redis token bucket that holds across instances, backoff and a circuit breaker.",
     ],
     metrics: [
@@ -219,12 +217,9 @@ export const toolbox = [
     items: ["Go", "Kubernetes", "Docker", "Linux", "Git", "Bash"],
   },
   {
-    title: "At work, in automotive",
-    items: ["C", "C++", "Python", "AUTOSAR", "Secure boot", "Diagnostics"],
-  },
-  {
     title: "Also comfortable with",
     items: [
+      "Python",
       "TypeScript",
       "React",
       "PostgreSQL",
@@ -241,10 +236,33 @@ export const toolbox = [
   { title: "Currently learning", items: ["Terraform"] },
 ];
 
+/**
+ * Rules that came out of building the projects above, each one with the mistake
+ * that produced it. All of them are documented in the repositories.
+ */
+export const principles = [
+  {
+    rule: "A correctness default must not live in an optional component.",
+    from: "The webhook that injected a CPU request was optional, so with Helm defaults the autoscaler silently could never scale. The reconciler defaults it too now.",
+  },
+  {
+    rule: "Never write example output you have not run.",
+    from: "A docs page nearly shipped with autoscaling numbers I had invented. Now the recordings and the benchmarks generate their own figures.",
+  },
+  {
+    rule: "Document the half-failure.",
+    from: "A repository created but the cluster apply rejected is the interesting case. The happy path documents itself.",
+  },
+  {
+    rule: "No mutable image tags, including my own.",
+    from: "The operator rejects `:latest` for the workloads it manages, so its own release pipeline stopped publishing a `latest` tag.",
+  },
+];
+
 export const archive = [
   {
     name: "idp-demo-service",
-    note: "A Go service scaffolded end to end by the portal — proof the pipeline produces something real.",
+    note: "A Go service scaffolded end to end by the portal, proof that the pipeline produces something real.",
     lang: "Go",
     year: "2026",
     url: "https://github.com/Mampiz/idp-demo-service",

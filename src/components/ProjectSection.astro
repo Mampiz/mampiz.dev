@@ -18,7 +18,7 @@ function richText(input: string): string {
     .replace(/>/g, "&gt;");
   return escaped.replace(
     /`([^`]+)`/g,
-    '<code class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[0.85em] text-ink">$1</code>',
+    '<code class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[0.85em] text-accent">$1</code>',
   );
 }
 ---
@@ -69,7 +69,7 @@ function richText(input: string): string {
         project.media.length > 0 ? (
           <MediaPanel items={project.media} label={project.name} />
         ) : (
-          <Diagram kind={project.diagram!} label={`${project.name} — how it fits together`} />
+          <Diagram kind={project.diagram!} label={`${project.name} · how it fits together`} />
         )
       }
     </div>
@@ -139,7 +139,7 @@ function richText(input: string): string {
     {
       project.metrics.map((metric) => (
         <div class="bg-bg px-5 py-6">
-          <dt class="font-display text-2xl font-semibold tracking-[-0.03em] text-ink md:text-[1.75rem]">
+          <dt class="font-display text-2xl font-semibold tracking-[-0.03em] text-accent md:text-[1.75rem]">
             {metric.value}
           </dt>
           <dd class="mt-1.5 font-mono text-[0.6875rem] leading-relaxed text-mute">
