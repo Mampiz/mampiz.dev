@@ -36,10 +36,9 @@ jobs:
           PUBLIC_SITE: https://${{ github.repository_owner }}.github.io
           PUBLIC_BASE: /${{ github.event.repository.name }}
 
+      # Pages is already enabled for this repository with "GitHub Actions" as
+      # the source; the workflow token is not allowed to turn it on itself.
       - uses: actions/configure-pages@v5
-        with:
-          # Turn Pages on for the repository on the first run.
-          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
