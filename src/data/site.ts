@@ -23,6 +23,15 @@ export type MediaItem = {
   caption?: string;
 };
 
+/**
+ * What a project shows on the landing panels. Two of the four projects ship no
+ * screenshots, and four near-identical terminal captures in a row read as
+ * filler anyway, so those get their headline figure instead.
+ */
+export type Cover =
+  | { kind: "image"; src: string }
+  | { kind: "figure"; figure: string; caption: string };
+
 export type Project = {
   slug: string;
   index: string;
@@ -35,6 +44,7 @@ export type Project = {
   metrics: Metric[];
   stack: string[];
   media: MediaItem[];
+  cover: Cover;
   /** Inline diagram id, used when a project ships no screenshots. */
   diagram?: "birdvision" | "gateway";
   repo?: string;
@@ -88,6 +98,7 @@ export const projects: Project[] = [
         caption: "metrics that ship with the operator",
       },
     ],
+    cover: { kind: "image", src: "operator-grafana.png" },
     repo: "https://github.com/Mampiz/webapp-operator",
   },
   {
@@ -140,6 +151,7 @@ export const projects: Project[] = [
         caption: "docs shipped with the template",
       },
     ],
+    cover: { kind: "image", src: "idp-webapp-tab.png" },
     repo: "https://github.com/Mampiz/idp-backstage",
   },
   {
@@ -173,6 +185,11 @@ export const projects: Project[] = [
       "NGINX-RTMP",
     ],
     media: [],
+    cover: {
+      kind: "figure",
+      figure: "0.910",
+      caption: "mAP@0.5 across 101 species",
+    },
     diagram: "birdvision",
     repo: "https://github.com/Mampiz/birdvision",
     demo: "https://automatic-bird-identification-syste.vercel.app",
@@ -206,6 +223,11 @@ export const projects: Project[] = [
       "GitHub Actions",
     ],
     media: [],
+    cover: {
+      kind: "figure",
+      figure: "SSE",
+      caption: "token by token, whichever provider answers",
+    },
     diagram: "gateway",
     repo: "https://github.com/Mampiz/llm-gateway",
   },
@@ -234,29 +256,6 @@ export const toolbox = [
     ],
   },
   { title: "Currently learning", items: ["Terraform"] },
-];
-
-/**
- * Rules that came out of building the projects above, each one with the mistake
- * that produced it. All of them are documented in the repositories.
- */
-export const principles = [
-  {
-    rule: "A correctness default must not live in an optional component.",
-    from: "The webhook that injected a CPU request was optional, so with Helm defaults the autoscaler silently could never scale. The reconciler defaults it too now.",
-  },
-  {
-    rule: "Never write example output you have not run.",
-    from: "A docs page nearly shipped with autoscaling numbers I had invented. Now the recordings and the benchmarks generate their own figures.",
-  },
-  {
-    rule: "Document the half-failure.",
-    from: "A repository created but the cluster apply rejected is the interesting case. The happy path documents itself.",
-  },
-  {
-    rule: "No mutable image tags, including my own.",
-    from: "The operator rejects `:latest` for the workloads it manages, so its own release pipeline stopped publishing a `latest` tag.",
-  },
 ];
 
 export const archive = [

@@ -27,23 +27,28 @@
   color-scheme: dark;
 }
 
+/*
+ * Light is a warm grey rather than paper white: cards are the only white
+ * surfaces, so they lift off the page instead of blending into it, and a full
+ * screen of it is not glaring.
+ */
 :root[data-theme="light"] {
-  --c-bg: #fbfbfc;
-  --c-bg-soft: #f5f6f8;
+  --c-bg: #f0f0f3;
+  --c-bg-soft: #e8e8ed;
   --c-surface: #ffffff;
-  --c-surface-2: #f4f5f7;
-  --c-line: #e2e5ea;
-  --c-line-soft: #edeff2;
-  --c-text: #0b0d11;
-  --c-dim: #4d545e;
-  --c-mute: #7b828c;
+  --c-surface-2: #f6f6f9;
+  --c-line: #d8d9e0;
+  --c-line-soft: #e4e5ea;
+  --c-text: #17191f;
+  --c-dim: #4a4f59;
+  --c-mute: #757b86;
   --c-accent: #3a49cf;
   --c-accent-ink: #ffffff;
-  --c-accent-soft: rgba(58, 73, 207, 0.09);
-  --c-glow: rgba(58, 73, 207, 0.18);
+  --c-accent-soft: rgba(58, 73, 207, 0.08);
+  --c-glow: rgba(58, 73, 207, 0.16);
 
-  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.8) inset,
-    0 18px 40px -28px rgba(11, 13, 17, 0.4);
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 16px 36px -26px rgba(23, 25, 31, 0.35);
 
   color-scheme: light;
 }
@@ -303,23 +308,142 @@
   pointer-events: none;
 }
 
-/* Marquee rail */
-.marquee {
-  display: flex;
-  width: max-content;
-  animation: marquee 45s linear infinite;
+/* ---------------------------------------------------------------------------
+   Project panels
+   Four covers in a row, one per project. Hovering one gives it the space and
+   pushes the others back, so the eye never has to compare four similar
+   screenshots at the same size. Pure CSS, and inert on touch.
+--------------------------------------------------------------------------- */
+
+.panels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
 }
 
-.marquee-wrap:hover .marquee {
-  animation-play-state: paused;
+.panel {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid var(--c-line);
+  background: var(--c-surface);
+  aspect-ratio: 4 / 5;
+  transition: border-color 0.4s ease, transform 0.4s ease;
 }
 
-@keyframes marquee {
-  from {
-    transform: translateX(0);
+@media (min-width: 768px) {
+  .panels {
+    display: flex;
+    height: clamp(15rem, 34vh, 21rem);
   }
-  to {
-    transform: translateX(-50%);
+
+  .panel {
+    flex: 1 1 0;
+    min-width: 0;
+    aspect-ratio: auto;
+    transition: flex-grow 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.4s ease;
+  }
+
+  /* Everything recedes a little while one panel is being read. */
+  .panels:hover .panel,
+  .panels:focus-within .panel {
+    flex-grow: 0.82;
+  }
+
+  .panels .panel:hover,
+  .panels .panel:focus-visible {
+    flex-grow: 2.4;
+  }
+}
+
+.panel:hover,
+.panel:focus-visible {
+  border-color: color-mix(in oklab, var(--c-accent) 55%, var(--c-line));
+}
+
+.panel-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left top;
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), filter 0.4s ease;
+  filter: saturate(0.88) brightness(0.92);
+}
+
+.panel:hover .panel-media {
+  transform: scale(1.04);
+  filter: saturate(1) brightness(1);
+}
+
+/* Cover for a project that ships no screenshots: its headline number instead. */
+.panel-figure {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  /* Room at the bottom so the figure never collides with the panel label. */
+  padding: 1.5rem 1.5rem 5.5rem;
+  background: radial-gradient(
+      circle at 1px 1px,
+      color-mix(in oklab, var(--c-accent) 22%, transparent) 1px,
+      transparent 0
+    )
+    0 0 / 18px 18px,
+    linear-gradient(
+      145deg,
+      color-mix(in oklab, var(--c-accent) 14%, var(--c-surface)),
+      var(--c-surface) 70%
+    );
+}
+
+.panel-meta {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  /* The generous top padding is the fade: the gradient tracks the label block,
+     so the text sits on solid ground however tall it grows. */
+  padding: 4.5rem 1.25rem 1.125rem;
+}
+
+.panel-meta.on-image {
+  /* Solid under the whole label block, fading only above it. */
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(0, 0, 0, 0.92) 58%,
+    rgba(0, 0, 0, 0.55) 80%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55);
+}
+
+/* The kicker only earns its space once the panel has room for it. */
+.panel-kicker {
+  display: block;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease, opacity 0.4s ease;
+}
+
+@media (min-width: 768px) {
+  .panel:hover .panel-kicker,
+  .panel:focus-visible .panel-kicker {
+    max-height: 2.5rem;
+    opacity: 1;
+  }
+}
+
+@media (max-width: 767px) {
+  .panel-kicker {
+    max-height: 2.5rem;
+    opacity: 1;
   }
 }
 

@@ -1,19 +1,7 @@
 ---
-import { person, principles } from "../data/site";
+import { person } from "../data/site";
 import { thumb } from "../lib/url";
 import SectionHead from "./SectionHead.astro";
-
-/** Escape, then turn `backticks` into inline code. */
-function richText(input: string): string {
-  const escaped = input
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-  return escaped.replace(
-    /`([^`]+)`/g,
-    '<code class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[0.85em] text-accent">$1</code>',
-  );
-}
 ---
 
 <section id="about" class="shell scroll-mt-24 border-t border-line py-16 md:py-24">
@@ -43,31 +31,6 @@ function richText(input: string): string {
           half-failure case, and why every figure on this page came out of a
           benchmark or a coverage report.
         </p>
-      </div>
-
-      <div class="mt-10 overflow-hidden rounded-2xl border border-line">
-        <div class="border-b border-line bg-surface-2 px-5 py-3">
-          <span class="label">Rules I keep coming back to</span>
-        </div>
-        {
-          principles.map((item, i) => (
-            <div class="flex gap-4 border-b border-line-soft px-5 py-5 last:border-b-0 md:gap-5">
-              <span class="mt-0.5 font-mono text-[0.6875rem] text-accent">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <div>
-                <p
-                  class="text-[0.9375rem] font-medium leading-snug text-ink"
-                  set:html={richText(item.rule)}
-                />
-                <p
-                  class="mt-1.5 text-[0.8125rem] leading-relaxed text-mute"
-                  set:html={richText(item.from)}
-                />
-              </div>
-            </div>
-          ))
-        }
       </div>
     </div>
 

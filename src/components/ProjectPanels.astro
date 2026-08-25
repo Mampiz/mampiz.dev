@@ -1,0 +1,67 @@
+---
+import { projects } from "../data/site";
+import { thumb } from "../lib/url";
+---
+
+<div class="shell reveal" style="--reveal-delay:260ms">
+  <nav class="panels" aria-label="Projects">
+    {
+      projects.map((project) => (
+        <a href={`#${project.slug}`} class="panel">
+          {project.cover.kind === "image" ? (
+            <>
+              <img
+                src={thumb(project.cover.src)}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                class="panel-media"
+              />
+            </>
+          ) : (
+            <span class="panel-figure" aria-hidden="true">
+              <span class="font-display text-[clamp(2.75rem,5vw,4rem)] font-semibold leading-none tracking-[-0.04em] text-accent">
+                {project.cover.figure}
+              </span>
+              <span class="max-w-[15rem] font-mono text-[0.6875rem] leading-relaxed text-dim">
+                {project.cover.caption}
+              </span>
+            </span>
+          )}
+
+          <span
+            class:list={[
+              "panel-meta",
+              project.cover.kind === "image" ? "on-image" : "",
+            ]}
+          >
+            <span
+              class:list={[
+                "block font-mono text-[0.625rem] tracking-[0.18em]",
+                project.cover.kind === "image" ? "text-white/65" : "text-mute",
+              ]}
+            >
+              {project.index}
+            </span>
+            <span
+              class:list={[
+                "mt-1 block font-display text-lg font-semibold tracking-[-0.02em]",
+                project.cover.kind === "image" ? "text-white" : "text-ink",
+              ]}
+            >
+              {project.name}
+            </span>
+            <span
+              class:list={[
+                "panel-kicker font-mono text-[0.6875rem]",
+                project.cover.kind === "image" ? "text-white/75" : "text-mute",
+              ]}
+            >
+              <span class="mt-1.5 block">{project.kicker}</span>
+            </span>
+          </span>
+        </a>
+      ))
+    }
+  </nav>
+</div>
