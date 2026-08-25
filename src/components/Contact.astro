@@ -1,5 +1,6 @@
 ---
 import { person } from "../data/site";
+import { asset } from "../lib/url";
 
 const links = [
   { label: "Email", value: person.email, href: `mailto:${person.email}` },
@@ -113,8 +114,17 @@ const year = new Date().getFullYear();
     <p class="font-mono text-[0.6875rem] text-mute">
       © {year} {person.name} · Built with Astro, deployed on GitHub Pages
     </p>
-    <a href="#top" class="link font-mono text-[0.6875rem] text-mute">
-      Back to top
+    <div class="flex items-center gap-6">
+      <a
+        href={asset("snake")}
+        class="font-mono text-[0.6875rem] tracking-[0.2em] text-mute transition-colors duration-300 hover:text-accent"
+        aria-label="A hidden game"
+        title="You know what to do"
+      >
+        ↑↑↓↓←→←→BA
+      </a>
+      <a href="#top" class="link font-mono text-[0.6875rem] text-mute">
+        Back to top
       <svg
         class="h-3 w-3"
         viewBox="0 0 24 24"
@@ -125,8 +135,9 @@ const year = new Date().getFullYear();
         stroke-linejoin="round"
         aria-hidden="true"
       >
-        <path d="M12 19V5M6 11l6-6 6 6"></path>
-      </svg>
-    </a>
+          <path d="M12 19V5M6 11l6-6 6 6"></path>
+        </svg>
+      </a>
+    </div>
   </footer>
 </section>

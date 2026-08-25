@@ -28,27 +28,28 @@
 }
 
 /*
- * Light is a warm grey rather than paper white: cards are the only white
- * surfaces, so they lift off the page instead of blending into it, and a full
- * screen of it is not glaring.
+ * Light is warm paper, not screen white. The page sits around 91% lightness so
+ * a full screen of it is easy to look at, cards are a shade lighter so they
+ * still lift, and the whole ramp is warmed slightly to keep the cool blue of
+ * the screenshots from making everything look grey and dead.
  */
 :root[data-theme="light"] {
-  --c-bg: #f0f0f3;
-  --c-bg-soft: #e8e8ed;
-  --c-surface: #ffffff;
-  --c-surface-2: #f6f6f9;
-  --c-line: #d8d9e0;
-  --c-line-soft: #e4e5ea;
-  --c-text: #17191f;
-  --c-dim: #4a4f59;
-  --c-mute: #757b86;
-  --c-accent: #3a49cf;
+  --c-bg: #e9e7e2;
+  --c-bg-soft: #e0ddd7;
+  --c-surface: #f7f6f3;
+  --c-surface-2: #eeece7;
+  --c-line: #d1cdc5;
+  --c-line-soft: #dedad3;
+  --c-text: #1a1916;
+  --c-dim: #55524b;
+  --c-mute: #817d75;
+  --c-accent: #3b41c4;
   --c-accent-ink: #ffffff;
-  --c-accent-soft: rgba(58, 73, 207, 0.08);
-  --c-glow: rgba(58, 73, 207, 0.16);
+  --c-accent-soft: rgba(59, 65, 196, 0.09);
+  --c-glow: rgba(59, 65, 196, 0.16);
 
-  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.9) inset,
-    0 16px 36px -26px rgba(23, 25, 31, 0.35);
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.7) inset,
+    0 18px 38px -26px rgba(40, 36, 30, 0.4);
 
   color-scheme: light;
 }

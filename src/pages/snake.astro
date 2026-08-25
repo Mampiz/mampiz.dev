@@ -1,0 +1,521 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import { person } from "../data/site";
+import { siteBase } from "../lib/url";
+---
+
+<Layout
+  title={`Reconcile · ${person.short}`}
+  description="A snake game, hidden on a portfolio, where the snake is a control loop and the food is pods."
+>
+  <Header standalone />
+
+  <main class="relative overflow-hidden pb-20 pt-28 md:pt-32">
+    <div
+      class="glow left-1/2 top-[-12rem] h-[24rem] w-[38rem] -translate-x-1/2 opacity-70"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="shell relative">
+      <div class="mx-auto max-w-[38rem]">
+        <div class="flex items-center gap-3">
+          <span
+            class="h-2.5 w-2.5 shrink-0 rotate-45 rounded-[3px] bg-accent"
+            aria-hidden="true"></span>
+          <span class="label">You found the easter egg</span>
+        </div>
+
+        <h1
+          class="mt-5 font-display text-[clamp(2.25rem,6vw,3.5rem)] font-semibold leading-none tracking-[-0.045em]"
+        >
+          Reconcile
+        </h1>
+
+        <p class="mt-4 text-[0.9375rem] leading-relaxed text-dim">
+          The loop wants every pod it can see. It never stops, it never shrinks,
+          and it dies the moment it touches itself. Which is roughly how a
+          controller feels at three in the morning.
+        </p>
+
+        <!-- Scoreboard -->
+        <dl
+          class="mt-8 grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-line bg-line"
+        >
+          <div class="bg-bg px-4 py-4">
+            <dt class="label">Pods</dt>
+            <dd
+              data-score
+              class="mt-1 font-display text-2xl font-semibold tracking-[-0.03em] text-accent"
+            >
+              0
+            </dd>
+          </div>
+          <div class="bg-bg px-4 py-4">
+            <dt class="label">Best</dt>
+            <dd
+              data-best
+              class="mt-1 font-display text-2xl font-semibold tracking-[-0.03em] text-ink"
+            >
+              0
+            </dd>
+          </div>
+          <div class="bg-bg px-4 py-4">
+            <dt class="label">Loop</dt>
+            <dd
+              data-rate
+              class="mt-1 font-mono text-sm text-dim"
+              style="padding-block:0.3rem"
+            >
+              idle
+            </dd>
+          </div>
+        </dl>
+
+        <!-- Board -->
+        <div
+          class="relative mx-auto mt-4 aspect-square w-[min(100%,58vh)] overflow-hidden rounded-2xl border border-line bg-surface shadow-[var(--shadow-card)]"
+        >
+          <canvas
+            data-board
+            class="block h-full w-full touch-none"
+            width="640"
+            height="640"
+            role="img"
+            aria-label="Snake game board"></canvas>
+
+          <!-- Start / pause / game over all share this panel -->
+          <div
+            data-overlay
+            class="absolute inset-0 grid place-items-center bg-bg/80 px-6 text-center backdrop-blur-[3px] transition-opacity duration-200"
+          >
+            <div class="max-w-[22rem]">
+              <p
+                data-overlay-title
+                class="font-display text-2xl font-semibold tracking-[-0.03em] md:text-3xl"
+              >
+                Ready when you are
+              </p>
+              <p data-overlay-body class="mt-3 text-sm leading-relaxed text-dim">
+                Arrow keys or WASD. On a phone, swipe.
+              </p>
+              <div
+                data-overlay-extra
+                class="mt-5 rounded-xl border border-accent/40 bg-accent-soft p-4 text-left"
+                hidden
+              >
+                <p class="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-accent">
+                  Available = True
+                </p>
+                <p class="mt-2 text-sm leading-relaxed text-dim">
+                  Twenty pods is more than I have ever managed. Tell me how you
+                  did it and I will put your score on this page.
+                </p>
+                <a data-overlay-mail href="#" class="link mt-3 inline-flex text-sm text-accent">
+                  Send me the score
+                  <svg
+                    class="arrow h-3 w-3"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M7 17 17 7M9 7h8v8"></path>
+                  </svg>
+                </a>
+              </div>
+              <button data-overlay-button type="button" class="btn btn-primary mt-6">
+                Start the loop
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-5 flex flex-wrap items-center justify-between gap-4">
+          <p class="font-mono text-[0.6875rem] text-mute">
+            Arrows / WASD · Space to pause · Enter to restart
+          </p>
+          <a href={`${siteBase}/`} class="link text-sm text-dim">
+            Back to the work
+            <svg
+              class="arrow h-3 w-3"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M7 17 17 7M9 7h8v8"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  type Cell = { x: number; y: number };
+  type State = "idle" | "running" | "paused" | "over";
+
+  const COLS = 21;
+  const ROWS = 21;
+  const START_STEP = 145;
+  const MIN_STEP = 68;
+  const UNLOCK_AT = 20;
+  const STORE_KEY = "reconcile-best";
+
+  const canvas = document.querySelector<HTMLCanvasElement>("[data-board]");
+  const scoreEl = document.querySelector<HTMLElement>("[data-score]");
+  const bestEl = document.querySelector<HTMLElement>("[data-best]");
+  const rateEl = document.querySelector<HTMLElement>("[data-rate]");
+  const overlay = document.querySelector<HTMLElement>("[data-overlay]");
+  const overlayTitle = document.querySelector<HTMLElement>("[data-overlay-title]");
+  const overlayBody = document.querySelector<HTMLElement>("[data-overlay-body]");
+  const overlayExtra = document.querySelector<HTMLElement>("[data-overlay-extra]");
+  const overlayMail = document.querySelector<HTMLAnchorElement>("[data-overlay-mail]");
+  const overlayButton = document.querySelector<HTMLButtonElement>(
+    "[data-overlay-button]",
+  );
+
+  if (canvas && overlay && overlayButton) {
+    const ctx = canvas.getContext("2d")!;
+
+    let snake: Cell[] = [];
+    let dir: Cell = { x: 1, y: 0 };
+    let queued: Cell[] = [];
+    let food: Cell = { x: 0, y: 0 };
+    let score = 0;
+    let best = 0;
+    let state: State = "idle";
+    let stepMs = START_STEP;
+    let acc = 0;
+    let last = 0;
+    let cell = 1;
+
+    try {
+      best = Number(localStorage.getItem(STORE_KEY)) || 0;
+    } catch (e) {
+      /* no storage available; the score just lives for this session */
+    }
+    if (bestEl) bestEl.textContent = String(best);
+
+    // Colours come from the stylesheet so the board follows the theme toggle.
+    let palette = readPalette();
+
+    function readPalette() {
+      const css = getComputedStyle(document.documentElement);
+      const read = (name: string) => css.getPropertyValue(name).trim();
+      return {
+        bg: read("--c-bg-soft"),
+        grid: read("--c-line"),
+        body: read("--c-accent"),
+        head: read("--c-text"),
+        food: read("--c-accent"),
+        faint: read("--c-line"),
+      };
+    }
+
+    new MutationObserver(() => {
+      palette = readPalette();
+      draw();
+    }).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+
+    // The canvas is square and redrawn at device resolution.
+    function resize() {
+      const size = Math.round(canvas!.getBoundingClientRect().width);
+      if (!size) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas!.width = size * dpr;
+      canvas!.height = size * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      cell = size / COLS;
+      draw();
+    }
+
+    function reset() {
+      const mid = Math.floor(ROWS / 2);
+      snake = [
+        { x: 4, y: mid },
+        { x: 3, y: mid },
+        { x: 2, y: mid },
+      ];
+      dir = { x: 1, y: 0 };
+      queued = [];
+      score = 0;
+      stepMs = START_STEP;
+      acc = 0;
+      placeFood();
+      updateHud();
+    }
+
+    function placeFood() {
+      const free: Cell[] = [];
+      for (let y = 0; y < ROWS; y++) {
+        for (let x = 0; x < COLS; x++) {
+          if (!snake.some((s) => s.x === x && s.y === y)) free.push({ x, y });
+        }
+      }
+      if (!free.length) return;
+      food = free[Math.floor(Math.random() * free.length)]!;
+    }
+
+    function updateHud() {
+      if (scoreEl) scoreEl.textContent = String(score);
+      if (bestEl) bestEl.textContent = String(Math.max(best, score));
+      if (rateEl) {
+        rateEl.textContent =
+          state === "running"
+            ? `${stepMs}ms`
+            : state === "paused"
+              ? "paused"
+              : state === "over"
+                ? "crashed"
+                : "idle";
+      }
+    }
+
+    function showOverlay(title: string, body: string, button: string, unlocked = false) {
+      if (overlayTitle) overlayTitle.textContent = title;
+      if (overlayBody) overlayBody.textContent = body;
+      if (overlayExtra) overlayExtra.hidden = !unlocked;
+      if (unlocked && overlayMail) {
+        const subject = encodeURIComponent(`I got ${score} pods`);
+        const body = encodeURIComponent(
+          `I reconciled ${score} pods on your snake game. Here is how.\n\n`,
+        );
+        overlayMail.href = `mailto:josepmampel20@gmail.com?subject=${subject}&body=${body}`;
+      }
+      overlayButton!.textContent = button;
+      overlay!.hidden = false;
+      overlay!.style.opacity = "1";
+      overlay!.style.pointerEvents = "auto";
+    }
+
+    function hideOverlay() {
+      overlay!.style.opacity = "0";
+      overlay!.style.pointerEvents = "none";
+    }
+
+    function start() {
+      reset();
+      state = "running";
+      last = performance.now();
+      hideOverlay();
+      updateHud();
+    }
+
+    function gameOver() {
+      state = "over";
+      const beaten = score > best;
+      if (beaten) {
+        best = score;
+        try {
+          localStorage.setItem(STORE_KEY, String(best));
+        } catch (e) {
+          /* nothing to persist to */
+        }
+      }
+      updateHud();
+      showOverlay(
+        "The loop crashed",
+        beaten
+          ? `${score} pods, and a new personal best. The controller still died.`
+          : `${score} pods. Best so far is ${best}.`,
+        "Reconcile again",
+        score >= UNLOCK_AT,
+      );
+    }
+
+    function step() {
+      const next = queued.shift();
+      if (next) dir = next;
+
+      const head: Cell = { x: snake[0]!.x + dir.x, y: snake[0]!.y + dir.y };
+
+      const offBoard =
+        head.x < 0 || head.y < 0 || head.x >= COLS || head.y >= ROWS;
+      // The tail cell frees up on this same tick unless we are growing.
+      const bitSelf = snake
+        .slice(0, -1)
+        .some((s) => s.x === head.x && s.y === head.y);
+
+      if (offBoard || bitSelf) {
+        gameOver();
+        return;
+      }
+
+      snake.unshift(head);
+
+      if (head.x === food.x && head.y === food.y) {
+        score += 1;
+        stepMs = Math.max(MIN_STEP, START_STEP - score * 4);
+        placeFood();
+        updateHud();
+      } else {
+        snake.pop();
+      }
+    }
+
+    function draw() {
+      const size = cell * COLS;
+      ctx.clearRect(0, 0, size, size);
+
+      ctx.fillStyle = palette.bg;
+      ctx.fillRect(0, 0, size, size);
+
+      ctx.strokeStyle = palette.grid;
+      ctx.lineWidth = 1;
+      for (let i = 1; i < COLS; i++) {
+        ctx.beginPath();
+        ctx.moveTo(Math.round(i * cell) + 0.5, 0);
+        ctx.lineTo(Math.round(i * cell) + 0.5, size);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, Math.round(i * cell) + 0.5);
+        ctx.lineTo(size, Math.round(i * cell) + 0.5);
+        ctx.stroke();
+      }
+
+      // Food: a ring, so it reads as a target rather than another body segment.
+      const fx = food.x * cell + cell / 2;
+      const fy = food.y * cell + cell / 2;
+      ctx.strokeStyle = palette.food;
+      ctx.lineWidth = Math.max(1.5, cell * 0.12);
+      ctx.beginPath();
+      ctx.arc(fx, fy, cell * 0.3, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.fillStyle = palette.food;
+      ctx.beginPath();
+      ctx.arc(fx, fy, cell * 0.1, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Body, oldest segments slightly faded so the direction reads.
+      const pad = Math.max(1, cell * 0.1);
+      snake.forEach((part, i) => {
+        ctx.globalAlpha = i === 0 ? 1 : Math.max(0.45, 1 - i / (snake.length * 1.6));
+        ctx.fillStyle = i === 0 ? palette.head : palette.body;
+        const x = part.x * cell + pad;
+        const y = part.y * cell + pad;
+        const w = cell - pad * 2;
+        ctx.beginPath();
+        if (typeof ctx.roundRect === "function") {
+          ctx.roundRect(x, y, w, w, Math.min(6, cell * 0.28));
+        } else {
+          ctx.rect(x, y, w, w);
+        }
+        ctx.fill();
+      });
+      ctx.globalAlpha = 1;
+    }
+
+    function frame(now: number) {
+      if (state === "running") {
+        acc += now - last;
+        while (acc >= stepMs && state === "running") {
+          acc -= stepMs;
+          step();
+        }
+        draw();
+      }
+      last = now;
+      requestAnimationFrame(frame);
+    }
+
+    function turn(x: number, y: number) {
+      const lastDir = queued.length ? queued[queued.length - 1]! : dir;
+      // No reversing into your own neck, and no queue longer than two turns.
+      if (lastDir.x === -x && lastDir.y === -y) return;
+      if (lastDir.x === x && lastDir.y === y) return;
+      if (queued.length < 2) queued.push({ x, y });
+    }
+
+    const keys: Record<string, [number, number]> = {
+      ArrowUp: [0, -1],
+      ArrowDown: [0, 1],
+      ArrowLeft: [-1, 0],
+      ArrowRight: [1, 0],
+      w: [0, -1],
+      s: [0, 1],
+      a: [-1, 0],
+      d: [1, 0],
+    };
+
+    window.addEventListener("keydown", (event) => {
+      const move = keys[event.key] ?? keys[event.key.toLowerCase()];
+      if (move) {
+        event.preventDefault();
+        if (state === "idle" || state === "over") start();
+        turn(move[0], move[1]);
+        return;
+      }
+      if (event.key === " ") {
+        event.preventDefault();
+        if (state === "running") {
+          state = "paused";
+          updateHud();
+          showOverlay("Paused", "Space again, or press start.", "Resume");
+        } else if (state === "paused") {
+          state = "running";
+          last = performance.now();
+          acc = 0;
+          hideOverlay();
+          updateHud();
+        }
+      }
+      if (event.key === "Enter") start();
+    });
+
+    overlayButton.addEventListener("click", () => {
+      if (state === "paused") {
+        state = "running";
+        last = performance.now();
+        acc = 0;
+        hideOverlay();
+        updateHud();
+        return;
+      }
+      start();
+    });
+
+    // Swipe, for phones.
+    let touch: { x: number; y: number } | null = null;
+    canvas.addEventListener(
+      "touchstart",
+      (event) => {
+        const t = event.touches[0]!;
+        touch = { x: t.clientX, y: t.clientY };
+      },
+      { passive: true },
+    );
+    canvas.addEventListener(
+      "touchmove",
+      (event) => {
+        if (!touch) return;
+        const t = event.touches[0]!;
+        const dx = t.clientX - touch.x;
+        const dy = t.clientY - touch.y;
+        if (Math.abs(dx) < 24 && Math.abs(dy) < 24) return;
+        if (state === "idle" || state === "over") start();
+        if (Math.abs(dx) > Math.abs(dy)) turn(Math.sign(dx), 0);
+        else turn(0, Math.sign(dy));
+        touch = { x: t.clientX, y: t.clientY };
+      },
+      { passive: true },
+    );
+
+    window.addEventListener("resize", resize);
+    reset();
+    resize();
+    requestAnimationFrame(frame);
+  }
+</script>

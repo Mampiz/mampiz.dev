@@ -26,7 +26,16 @@ import { siteBase } from "../lib/url";
         Nothing lives at this address. It was either moved, or it never existed and
         something linked to it anyway.
       </p>
-      <a href={`${siteBase}/`} class="btn btn-primary mt-9">
+      <p class="mt-6 text-sm text-mute">
+        There is a
+        <a
+          href={`${siteBase}/snake`}
+          class="text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent"
+          >game hidden on this site</a
+        >, if you would rather do that than leave.
+      </p>
+
+      <a href={`${siteBase}/`} class="btn btn-primary mt-8">
         Back to the work
         <svg
           class="h-3.5 w-3.5"

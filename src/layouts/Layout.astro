@@ -74,7 +74,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://example.com
     />
   </head>
 
-  <body>
+  <body data-game={asset("snake")}>
     <a
       href="#work"
       class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-bg"
@@ -172,6 +172,26 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://example.com
             }
           });
         });
+
+      // The Konami code opens the hidden game. Skipped on the game itself,
+      // where the arrow keys belong to the snake.
+      const gameUrl = document.body.dataset.game;
+      if (gameUrl && !location.pathname.replace(/\/$/, "").endsWith("/snake")) {
+        const code = [
+          "ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown",
+          "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a",
+        ];
+        let progress = 0;
+        window.addEventListener("keydown", (event) => {
+          const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+          if (key === code[progress]) progress += 1;
+          else progress = key === code[0] ? 1 : 0;
+          if (progress === code.length) {
+            progress = 0;
+            location.href = gameUrl;
+          }
+        });
+      }
 
       // Mobile menu
       const menu = document.querySelector<HTMLElement>("[data-menu]");
