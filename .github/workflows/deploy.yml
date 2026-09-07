@@ -38,7 +38,7 @@ jobs:
 
       # Pages is already enabled for this repository with "GitHub Actions" as
       # the source; the workflow token is not allowed to turn it on itself.
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
 
       - uses: actions/upload-pages-artifact@v3
         with:
