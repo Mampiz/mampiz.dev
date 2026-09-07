@@ -46,6 +46,7 @@ export type Project = {
   cover: Cover;
   repo?: string;
   demo?: string;
+  diagram?: string;
   demoLabel?: string;
 };
 
@@ -253,6 +254,7 @@ export const projects: Project[] = [
     ],
     cover: { kind: "image", src: "gateway-streaming.gif" },
     repo: "https://github.com/Mampiz/llm-gateway",
+    diagram: "diagrams/llm-gateway-architecture.html",
   },
   {
     slug: "birdvision",
