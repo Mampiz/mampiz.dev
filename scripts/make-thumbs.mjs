@@ -10,7 +10,32 @@ const target = join(source, "thumbs");
 mkdirSync(target, { recursive: true });
 
 const WIDTH = 720;
+const SAMPLES = 14;
 let saved = 0;
+
+/**
+ * Pick the frame of an animation with the most on screen.
+ *
+ * A fixed ratio does not work: a terminal recording spends most of its frames
+ * on a pause, so "65% of the way through" lands on an empty prompt as often as
+ * not. Standard deviation of the greyscale channel is a good enough proxy for
+ * how much is drawn, and the busiest frame is the one worth showing.
+ */
+async function busiestFrame(file, pages) {
+  let best = { page: 0, spread: -1 };
+  for (let i = 0; i < SAMPLES; i++) {
+    const page = Math.min(
+      pages - 1,
+      Math.round(((i + 1) / (SAMPLES + 1)) * pages),
+    );
+    const { channels } = await sharp(file, { page })
+      .greyscale()
+      .stats();
+    const spread = channels[0].stdev;
+    if (spread > best.spread) best = { page, spread };
+  }
+  return best.page;
+}
 
 for (const file of readdirSync(source)) {
   const { name, ext } = parse(file);
@@ -21,10 +46,8 @@ for (const file of readdirSync(source)) {
   const from = join(source, file);
   const to = join(target, `${name}.webp`);
 
-  // Animated sources need a frame from the middle of the run: frame 0 of a
-  // terminal recording is an empty prompt, which makes a useless thumbnail.
   const { pages = 1 } = await sharp(from).metadata();
-  const page = pages > 1 ? Math.floor(pages * 0.65) : 0;
+  const page = pages > 1 ? await busiestFrame(from, pages) : 0;
 
   await sharp(from, { page })
     .resize({ width: WIDTH, withoutEnlargement: true })

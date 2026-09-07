@@ -9,7 +9,7 @@ export const person = {
   linkedin: "https://linkedin.com/in/josep-mampel-marques",
   tagline: "Some Go, some Kubernetes, one bird detector.",
   summary:
-    "A Kubernetes operator, an internal developer platform, a computer vision pipeline and a concurrent Go gateway.",
+    "A Kubernetes operator, an internal developer platform, admission control tied to build provenance, a concurrent Go gateway and a computer vision pipeline.",
 } as const;
 
 export type Metric = { value: string; label: string };
@@ -24,9 +24,8 @@ export type MediaItem = {
 };
 
 /**
- * What a project shows on the landing panels. Two of the four projects ship no
- * screenshots, and four near-identical terminal captures in a row read as
- * filler anyway, so those get their headline figure instead.
+ * What a project shows on the landing panels: either a real screenshot or, for
+ * variety in a row of five, its headline figure.
  */
 export type Cover =
   | { kind: "image"; src: string }
@@ -45,8 +44,6 @@ export type Project = {
   stack: string[];
   media: MediaItem[];
   cover: Cover;
-  /** Inline diagram id, used when a project ships no screenshots. */
-  diagram?: "birdvision" | "gateway";
   repo?: string;
   demo?: string;
   demoLabel?: string;
@@ -155,8 +152,111 @@ export const projects: Project[] = [
     repo: "https://github.com/Mampiz/idp-backstage",
   },
   {
-    slug: "birdvision",
+    slug: "provenance-gate",
     index: "03",
+    name: "provenance-gate",
+    kicker: "Admission control · Supply chain",
+    headline:
+      "A signed image is not enough. The question is who signed it, and whether they were supposed to.",
+    year: "2026",
+    body: [
+      "Admission control that ties a Kubernetes workload to the build that produced it. Not `this image is signed`, but *this image was built by the workflow that belongs to this service*, checked against a trust root the workload itself cannot write. The demo runs three admissions against images the repository really publishes: its own build is admitted, an unsigned image is refused, and an image built by a different workflow of the same trusted builder is refused as well. The third one is the whole point, because it is not a forgery.",
+      "The project began from a claim that turned out to be false, and correcting it is more interesting than the claim was. I argued that Kyverno could not express a per-resource provenance check, then tested it against Kyverno 1.19 before writing a line of the webhook. It can, in nine lines of CEL. So the boundary moved: Kyverno stays the enforcement engine and nothing here reimplements it, but it can only *read* a trust root, not create one, keep it in step, or control who writes it. That registry is what this builds, with RBAC bound to the platform's ServiceAccount and to nobody else. The design record saying the earlier one was wrong is kept next to it, unedited.",
+    ],
+    metrics: [
+      { value: "0.6 ms", label: "admission p50, cache warm" },
+      { value: "SLSA L3", label: "the builder signs, not the repo" },
+      { value: "45.9 MiB", label: "RSS under load" },
+      { value: "10", label: "design records, one retracting another" },
+    ],
+    stack: [
+      "Go",
+      "Kubernetes",
+      "controller-runtime",
+      "Admission webhooks",
+      "Sigstore",
+      "cosign",
+      "SLSA",
+      "Kyverno",
+      "kind",
+      "GitHub Actions",
+    ],
+    media: [
+      {
+        src: "gate-verify-f3.gif",
+        alt: "Terminal recording: three admissions, where an unsigned image and a genuinely signed image built by the wrong workflow are both refused",
+        caption: "three admissions, one refused despite a real signature",
+      },
+      {
+        src: "gate-verify-f4.gif",
+        alt: "Terminal recording: a WebApp is admitted and reconciled into pods, then the same WebApp on an untrusted image is refused",
+        caption: "the whole path, operator included",
+      },
+    ],
+    cover: {
+      kind: "figure",
+      figure: "0.6 ms",
+      caption: "admission p50, cache warm",
+    },
+    repo: "https://github.com/Mampiz/provenance-gate",
+  },
+  {
+    slug: "llm-gateway",
+    index: "04",
+    name: "llm-gateway",
+    kicker: "Concurrent Go proxy",
+    headline: "One OpenAI-shaped endpoint, every provider behind it.",
+    year: "2026",
+    status: "v1.0.0",
+    body: [
+      "An application that talks to OpenAI directly is married to OpenAI: its key sits in that application's config, its retries are that application's problem, and nobody can say what it costs. Six applications means six of each. The gateway takes it over. One endpoint, one set of revocable keys, and the messy parts written once: routing by model prefix, streaming, failover, a rate limiter shared across replicas, caching and metrics. Any OpenAI client works unchanged by pointing its base URL at it.",
+      "Each vendor speaks its own dialect, so every provider package owns its translation and none of that vocabulary escapes it, a rule Go turns into a compile error rather than a convention. The parts worth arguing about are the failure paths: only retryable errors fail over, backoff is jittered so a thousand clients do not retry in unison, a circuit breaker pulls a bad provider out and lets exactly one probe decide when it is back, and identical concurrent requests collapse into a single upstream call. It builds and tests itself offline against a fake upstream that speaks both dialects and misbehaves on request.",
+    ],
+    metrics: [
+      { value: "v1.0.0", label: "released, with SBOM and provenance" },
+      { value: "49", label: "smoke checks, no API key needed" },
+      { value: "8", label: "Prometheus metrics exported" },
+      { value: "scratch", label: "base image: no shell, no libc" },
+    ],
+    stack: [
+      "Go",
+      "Concurrency",
+      "SSE",
+      "Redis",
+      "Prometheus",
+      "Grafana",
+      "Helm",
+      "Docker",
+      "GitHub Actions",
+    ],
+    media: [
+      {
+        src: "gateway-streaming.gif",
+        alt: "Terminal recording: tokens from a Claude model arriving one by one in OpenAI's wire format",
+        caption: "a Claude model, in OpenAI's wire format",
+      },
+      {
+        src: "gateway-fallback.gif",
+        alt: "Terminal recording: OpenAI fails, the answer comes back from Anthropic, and the circuit opens",
+        caption: "OpenAI is down, Anthropic answers, the circuit opens",
+      },
+      {
+        src: "gateway-smoke.gif",
+        alt: "Terminal recording: make smoke running forty-nine checks against a live gateway",
+        caption: "49 checks against a live gateway",
+      },
+      {
+        src: "gateway-bootstrap.gif",
+        alt: "Terminal recording: one script builds, tests and verifies the gateway, then prints a working API key",
+        caption: "one script: build, test, verify, print a key",
+      },
+    ],
+    cover: { kind: "image", src: "gateway-streaming.gif" },
+    repo: "https://github.com/Mampiz/llm-gateway",
+  },
+  {
+    slug: "birdvision",
+    index: "05",
     name: "BirdVision",
     kicker: "Computer vision platform · Final degree project",
     headline: "Point a camera at a drinking trough. Get species, place and time.",
@@ -184,52 +284,33 @@ export const projects: Project[] = [
       "AWS",
       "NGINX-RTMP",
     ],
-    media: [],
-    cover: {
-      kind: "figure",
-      figure: "0.910",
-      caption: "mAP@0.5 across 101 species",
-    },
-    diagram: "birdvision",
+    media: [
+      {
+        src: "bird-livecams-demo.gif",
+        poster: "bird-livecams-focus.jpg",
+        alt: "A live camera stream of a drinking trough with detection boxes and species names drawn over the playing video",
+        caption: "a live camera, boxes drawn on the stream",
+      },
+      {
+        src: "bird-image-detection.jpg",
+        alt: "An uploaded photo with two birds boxed and named, at 95 and 84 percent confidence",
+        caption: "two species named on an uploaded photo",
+      },
+      {
+        src: "bird-video-annotated.jpg",
+        alt: "An analysed video with annotations and a per-species breakdown",
+        caption: "an analysed video, annotated and downloadable",
+      },
+      {
+        src: "bird-feed.jpg",
+        alt: "The shared public feed of analysed videos",
+        caption: "analysed videos published to a shared feed",
+      },
+    ],
+    cover: { kind: "image", src: "bird-livecams-focus.jpg" },
     repo: "https://github.com/Mampiz/birdvision",
     demo: "https://automatic-bird-identification-syste.vercel.app",
     demoLabel: "Live demo",
-  },
-  {
-    slug: "llm-gateway",
-    index: "04",
-    name: "llm-gateway",
-    kicker: "Concurrent Go proxy",
-    headline: "One OpenAI-shaped endpoint, several providers behind it.",
-    year: "2026",
-    status: "In progress",
-    body: [
-      "A gateway in front of multiple model providers: prefix routing, automatic failover, distributed rate limiting, response caching, streaming and metrics, all behind a single OpenAI-compatible `/v1/chat/completions`.",
-      "Every vendor speaks its own dialect, so each provider package owns the translation to and from the gateway's canonical schema and no vendor vocabulary leaks past it. Fields the gateway does not model are forwarded rather than dropped. It exists mostly as an excuse to write concurrent Go that is harder than a worker-pool tutorial: goroutines and channels for SSE streaming, a Redis token bucket that holds across instances, backoff and a circuit breaker.",
-    ],
-    metrics: [
-      { value: "1 API", label: "for every provider" },
-      { value: "SSE", label: "token-by-token streaming" },
-      { value: "Redis", label: "rate limiting across instances" },
-      { value: "6", label: "CI workflows, CodeQL included" },
-    ],
-    stack: [
-      "Go",
-      "Concurrency",
-      "Redis",
-      "SSE",
-      "Prometheus",
-      "Docker",
-      "GitHub Actions",
-    ],
-    media: [],
-    cover: {
-      kind: "figure",
-      figure: "SSE",
-      caption: "token by token, whichever provider answers",
-    },
-    diagram: "gateway",
-    repo: "https://github.com/Mampiz/llm-gateway",
   },
 ];
 
@@ -254,6 +335,9 @@ export const toolbox = [
       "Prometheus",
       "Grafana",
       "GitHub Actions",
+      "Helm",
+      "Kyverno",
+      "Sigstore",
     ],
   },
   { title: "Currently learning", items: ["Terraform"] },

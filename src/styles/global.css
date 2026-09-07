@@ -452,6 +452,11 @@
     min-height: 15.5rem;
   }
 
+  /* An odd number of panels would leave a hole; the last one takes the row. */
+  .panels > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
   .panel-figure {
     justify-content: flex-start;
     padding: 1.25rem 1.25rem 1rem;

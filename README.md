@@ -28,10 +28,10 @@ array — the page renders the section, the metric strip and the entry in the he
 rail from it.
 
 Screenshots and recordings go in `public/media/` and are referenced by filename
-from a project's `media` array. A project with no media renders an inline SVG
-diagram instead ([`src/components/Diagram.astro`](src/components/Diagram.astro)).
-Large recordings can carry a `poster` so the GIF only downloads when a visitor
-asks to play it.
+from a project's `media` array. Large recordings can carry a `poster` so the GIF
+only downloads when a visitor asks to play it. Each project also declares a
+`cover` for the landing panels: either one of its screenshots or, for variety in
+a row of five, its headline figure.
 
 ## Layout
 
@@ -39,19 +39,21 @@ asks to play it.
 src/
   data/site.ts          all copy and project data
   layouts/Layout.astro  document head, theme bootstrap, page scripts
-  components/           header, hero, project section, gallery, diagrams
+  components/           header, hero, project panels, case study, gallery
   styles/global.css     design tokens, light/dark themes, component classes
 scripts/
-  make-thumbs.mjs       WebP previews for the hero rail and gallery strips
+  make-thumbs.mjs       WebP previews for the landing panels and gallery strips
   make-og.mjs           regenerates the social preview card (public/og.png)
   shots.mjs, hero.mjs   headless screenshots, used while designing the page
   weigh.mjs             reports what the first screen actually downloads
 ```
 
 After adding or replacing anything in `public/media/`, run `npm run thumbs`.
-Nothing on the first screen loads a full-size recording: the hero rail and the
+Nothing on the first screen loads a full-size recording: the panels and the
 gallery strips use those previews, and a multi-megabyte GIF is only fetched when
-a visitor presses play.
+a visitor presses play. For an animation the preview is not a fixed frame but
+the busiest one, because a terminal recording spends most of its frames paused
+on an empty prompt.
 
 ## Deployment
 
