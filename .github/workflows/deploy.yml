@@ -40,7 +40,7 @@ jobs:
       # the source; the workflow token is not allowed to turn it on itself.
       - uses: actions/configure-pages@v5
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
 
