@@ -1,0 +1,63 @@
+---
+import { projects } from "../data/site";
+import { thumb } from "../lib/url";
+---
+
+<ul class="mt-10 border-t border-line" aria-label="Projects">
+  {
+    projects.map((project, i) => (
+      <li class="reveal" style={`--reveal-delay:${i * 50}ms`}>
+        <a
+          href={`#${project.slug}`}
+          class="index-row group flex items-center gap-4 border-b border-line py-4 sm:gap-6 sm:px-3"
+        >
+          <span class="relative block h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-line bg-surface-2 sm:h-28 sm:w-28">
+            {project.cover.kind === "image" ? (
+              <img
+                src={thumb(project.cover.src)}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                width="224"
+                height="224"
+                class="thumb h-full w-full object-cover object-left-top"
+              />
+            ) : (
+              <span class="grid h-full w-full place-items-center bg-accent-soft px-1 text-center font-hero text-base font-bold leading-none tracking-[-0.03em] text-accent sm:text-xl">
+                {project.cover.figure}
+              </span>
+            )}
+          </span>
+
+          <span class="min-w-0 flex-1">
+            <span class="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <span class="font-hero text-lg font-semibold tracking-[-0.01em] text-ink transition-colors duration-300 group-hover:text-accent sm:text-2xl">
+                {project.name}
+              </span>
+              {project.status && (
+                <span class="rounded-full border border-accent/40 bg-accent-soft px-2 py-0.5 font-mono text-[0.5625rem] uppercase tracking-[0.14em] text-accent">
+                  {project.status}
+                </span>
+              )}
+            </span>
+            <span class="mt-1 block truncate text-sm text-mute">{project.kicker}</span>
+            <span class="label mt-1.5 block">{project.index} · {project.year}</span>
+          </span>
+
+          <svg
+            class="h-4 w-4 shrink-0 text-accent transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 sm:h-5 sm:w-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.9"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M7 17 17 7M9 7h8v8"></path>
+          </svg>
+        </a>
+      </li>
+    ))
+  }
+</ul>

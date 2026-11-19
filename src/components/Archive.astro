@@ -3,9 +3,10 @@ import { archive, person } from "../data/site";
 import SectionHead from "./SectionHead.astro";
 ---
 
-<section id="archive" class="shell scroll-mt-24 border-t border-line py-16 md:py-24">
+<section id="archive" class="scroll-mt-24 border-t border-line py-16 md:py-24">
   <SectionHead
-    title="Archive"
+    title="Older"
+    ghost="and smaller"
     blurb="Older and smaller repositories, kept public because deleting your history is a strange thing to do."
   />
 
@@ -16,7 +17,7 @@ import SectionHead from "./SectionHead.astro";
           <a
             href={item.url}
             rel="noopener"
-            class="group grid grid-cols-[1fr_auto] items-center gap-x-6 gap-y-1 border-b border-line py-5 transition-colors duration-300 hover:bg-surface md:grid-cols-[15rem_1fr_9rem_auto] md:px-4"
+            class="group grid grid-cols-[1fr_auto] items-center gap-x-6 gap-y-1 border-b border-line py-5 transition-colors duration-300 hover:bg-surface md:grid-cols-[11rem_1fr_8.5rem_auto] md:px-4"
           >
             <span class="font-display text-lg font-medium tracking-tight text-ink transition-colors duration-300 group-hover:text-accent">
               {item.name}

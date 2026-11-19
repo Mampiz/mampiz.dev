@@ -20,6 +20,11 @@
   --c-accent-ink: #0a0b12;
   --c-accent-soft: rgba(139, 155, 255, 0.14);
   --c-glow: rgba(139, 155, 255, 0.28);
+  --c-ghost: #454b58;
+  --c-card: #efeff1;
+  --c-card-ink: #0d0f13;
+  --c-card-dim: #55595f;
+  --c-card-line: #d7d8dc;
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03) inset,
     0 24px 60px -30px rgba(0, 0, 0, 0.9);
@@ -47,6 +52,11 @@
   --c-accent-ink: #ffffff;
   --c-accent-soft: rgba(59, 65, 196, 0.09);
   --c-glow: rgba(59, 65, 196, 0.16);
+  --c-ghost: #c6c2b9;
+  --c-card: #1c1b18;
+  --c-card-ink: #f4f2ee;
+  --c-card-dim: #aaa69d;
+  --c-card-line: #36342f;
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.7) inset,
     0 18px 38px -26px rgba(40, 36, 30, 0.4);
@@ -71,6 +81,7 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
     sans-serif;
   --font-display: "Inter Tight", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-hero: "Poppins", "Inter Tight", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", "Menlo", monospace;
 }
 
@@ -309,168 +320,6 @@
   pointer-events: none;
 }
 
-/* ---------------------------------------------------------------------------
-   Project panels
-   Four covers in a row, one per project. Hovering one gives it the space and
-   pushes the others back, so the eye never has to compare four similar
-   screenshots at the same size. Pure CSS, and inert on touch.
---------------------------------------------------------------------------- */
-
-.panels {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
-}
-
-.panel {
-  position: relative;
-  display: block;
-  overflow: hidden;
-  border-radius: 1rem;
-  border: 1px solid var(--c-line);
-  background: var(--c-surface);
-  aspect-ratio: 4 / 5;
-  transition: border-color 0.4s ease, transform 0.4s ease;
-}
-
-@media (min-width: 768px) {
-  .panels {
-    display: flex;
-    height: clamp(15rem, 34vh, 21rem);
-  }
-
-  .panel {
-    flex: 1 1 0;
-    min-width: 0;
-    aspect-ratio: auto;
-    transition: flex-grow 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-      border-color 0.4s ease;
-  }
-
-  /* Everything recedes a little while one panel is being read. */
-  .panels:hover .panel,
-  .panels:focus-within .panel {
-    flex-grow: 0.82;
-  }
-
-  .panels .panel:hover,
-  .panels .panel:focus-visible {
-    flex-grow: 2.4;
-  }
-}
-
-.panel:hover,
-.panel:focus-visible {
-  border-color: color-mix(in oklab, var(--c-accent) 55%, var(--c-line));
-}
-
-.panel-media {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: left top;
-  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), filter 0.4s ease;
-  filter: saturate(0.88) brightness(0.92);
-}
-
-.panel:hover .panel-media {
-  transform: scale(1.04);
-  filter: saturate(1) brightness(1);
-}
-
-/* Cover for a project that ships no screenshots: its headline number instead. */
-.panel-figure {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.5rem;
-  /* Room at the bottom so the figure never collides with the panel label. */
-  padding: 1.5rem 1.5rem 5.5rem;
-  background: radial-gradient(
-      circle at 1px 1px,
-      color-mix(in oklab, var(--c-accent) 22%, transparent) 1px,
-      transparent 0
-    )
-    0 0 / 18px 18px,
-    linear-gradient(
-      145deg,
-      color-mix(in oklab, var(--c-accent) 14%, var(--c-surface)),
-      var(--c-surface) 70%
-    );
-}
-
-.panel-meta {
-  position: absolute;
-  inset-inline: 0;
-  bottom: 0;
-  /* The generous top padding is the fade: the gradient tracks the label block,
-     so the text sits on solid ground however tall it grows. */
-  padding: 4.5rem 1.25rem 1.125rem;
-}
-
-.panel-meta.on-image {
-  /* Solid under the whole label block, fading only above it. */
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.95) 0%,
-    rgba(0, 0, 0, 0.92) 58%,
-    rgba(0, 0, 0, 0.55) 80%,
-    rgba(0, 0, 0, 0) 100%
-  );
-  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55);
-}
-
-/* The kicker only earns its space once the panel has room for it. */
-.panel-kicker {
-  display: block;
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  transition: max-height 0.5s ease, opacity 0.4s ease;
-}
-
-@media (min-width: 768px) {
-  .panel:hover .panel-kicker,
-  .panel:focus-visible .panel-kicker {
-    max-height: 2.5rem;
-    opacity: 1;
-  }
-}
-
-/*
- * On a phone a panel is barely 200px wide, so the figure and the label fight
- * for the same space. The figure moves to the top, the kicker steps out, and
- * the panel gets a real minimum height instead of a ratio.
- */
-@media (max-width: 767px) {
-  .panel {
-    aspect-ratio: auto;
-    min-height: 15.5rem;
-  }
-
-  /* An odd number of panels would leave a hole; the last one takes the row. */
-  .panels > :last-child:nth-child(odd) {
-    grid-column: 1 / -1;
-  }
-
-  .panel-figure {
-    justify-content: flex-start;
-    padding: 1.25rem 1.25rem 1rem;
-  }
-
-  .panel-meta {
-    padding-top: 2.75rem;
-  }
-
-  .panel-kicker {
-    display: none;
-  }
-}
-
 /* Reading progress, pinned above everything, scaled from JS. */
 .progress {
   position: fixed;
@@ -487,4 +336,59 @@
     var(--c-accent)
   );
   pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Two-tone headings: first line in full ink, second a ghost of it.
+--------------------------------------------------------------------------- */
+
+.hero-title {
+  font-family: var(--font-hero);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+.hero-title .ghost {
+  display: block;
+  color: var(--c-ghost);
+}
+
+/* Profile card: inverted against the page, so it is the brightest thing on it. */
+.profile-card {
+  background: var(--c-card);
+  color: var(--c-card-ink);
+  box-shadow: var(--shadow-card);
+}
+
+.profile-card .dim {
+  color: var(--c-card-dim);
+}
+
+/* Floating pill nav. */
+.pill {
+  background: color-mix(in oklab, var(--c-surface) 94%, transparent);
+  border: 1px solid var(--c-line);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px -14px rgba(0, 0, 0, 0.6);
+}
+
+/* Project index rows. */
+.index-row {
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.index-row:hover {
+  background: var(--c-surface);
+}
+
+.index-row .thumb {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.index-row:hover .thumb {
+  transform: scale(1.05);
 }

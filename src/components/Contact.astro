@@ -8,32 +8,24 @@ const links = [
   { label: "GitHub", value: `@${person.handle}`, href: person.github },
 ];
 
-const year = new Date().getFullYear();
 ---
 
 <section
   id="contact"
-  class="relative scroll-mt-24 overflow-hidden border-t border-line pt-20 md:pt-28"
+  class="relative scroll-mt-24 overflow-hidden border-t border-line pb-4 pt-16 md:pt-24"
 >
   <div
-    class="glow bottom-[-16rem] left-1/2 h-[24rem] w-[42rem] -translate-x-1/2"
+    class="glow bottom-[-16rem] left-1/2 h-[20rem] w-[34rem] -translate-x-1/2"
     aria-hidden="true"
   >
   </div>
 
-  <div class="shell relative">
-    <div class="reveal flex items-center gap-4 md:gap-5">
-      <span
-        class="h-2.5 w-2.5 shrink-0 rotate-45 rounded-[3px] bg-accent"
-        aria-hidden="true"></span>
-      <span class="label">Contact</span>
-    </div>
-
+  <div class="relative">
     <h2
-      class="reveal mt-6 max-w-[16ch] font-display text-[clamp(2.4rem,7vw,5rem)] font-semibold leading-[0.96] tracking-[-0.045em]"
-      style="--reveal-delay:60ms"
+      class="hero-title reveal text-[clamp(2.25rem,5.6vw,4rem)]"
     >
-      Ask me anything about any of it.
+      Ask me anything
+      <span class="ghost">about any of it.</span>
     </h2>
 
     <p
@@ -108,36 +100,4 @@ const year = new Date().getFullYear();
     </ul>
   </div>
 
-  <footer
-    class="shell relative mt-20 flex flex-wrap items-center justify-between gap-4 border-t border-line py-8"
-  >
-    <p class="font-mono text-[0.6875rem] text-mute">
-      © {year} {person.name} · Built with Astro, deployed on GitHub Pages
-    </p>
-    <div class="flex items-center gap-6">
-      <a
-        href={asset("snake")}
-        class="link font-mono text-[0.6875rem] text-mute hover:text-accent"
-        title="Or press it on the keyboard"
-      >
-        Play Reconcile
-        <span class="tracking-[0.2em] opacity-60">↑↑↓↓←→←→BA</span>
-      </a>
-      <a href="#top" class="link font-mono text-[0.6875rem] text-mute">
-        Back to top
-      <svg
-        class="h-3 w-3"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-          <path d="M12 19V5M6 11l6-6 6 6"></path>
-        </svg>
-      </a>
-    </div>
-  </footer>
 </section>

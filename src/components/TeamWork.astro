@@ -3,9 +3,10 @@ import { teamwork } from "../data/site";
 import SectionHead from "./SectionHead.astro";
 ---
 
-<section id="team" class="shell scroll-mt-24 border-t border-line py-16 md:py-24">
+<section id="team" class="scroll-mt-24 border-t border-line py-16 md:py-24">
   <SectionHead
-    title="Team work"
+    title="Team"
+    ghost="work"
     blurb="Shared repositories, described by what I actually merged rather than by what the team shipped."
   />
 
@@ -15,7 +16,7 @@ import SectionHead from "./SectionHead.astro";
     >
       <div class="flex items-center gap-4 md:gap-6">
         <h3
-          class="font-display text-[clamp(1.9rem,4.4vw,3.25rem)] font-semibold leading-none tracking-[-0.04em]"
+          class="font-hero text-[clamp(1.7rem,3.6vw,2.6rem)] font-bold leading-none tracking-[-0.02em]"
         >
           {teamwork.name}
         </h3>
@@ -35,9 +36,9 @@ import SectionHead from "./SectionHead.astro";
       {teamwork.headline}
     </p>
 
-    <div class="mt-10 grid gap-8 lg:mt-12 lg:grid-cols-12 lg:gap-12">
+    <div class="mt-10 grid grid-cols-[minmax(0,1fr)] gap-8">
       <!-- The contribution is the point of the entry, so it gets the wide column. -->
-      <div class="reveal lg:col-span-7" style="--reveal-delay:120ms">
+      <div class="reveal" style="--reveal-delay:120ms">
         <div
           class="overflow-hidden rounded-2xl border border-line bg-surface shadow-[var(--shadow-card)]"
         >
@@ -70,7 +71,7 @@ import SectionHead from "./SectionHead.astro";
         </div>
       </div>
 
-      <div class="reveal lg:col-span-5" style="--reveal-delay:180ms">
+      <div class="reveal" style="--reveal-delay:180ms">
         <div class="space-y-5 text-[0.9375rem] leading-relaxed text-dim">
           {teamwork.body.map((paragraph) => <p>{paragraph}</p>)}
         </div>

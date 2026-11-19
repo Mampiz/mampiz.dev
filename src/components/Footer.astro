@@ -1,0 +1,39 @@
+---
+import { person } from "../data/site";
+import { asset } from "../lib/url";
+
+const year = new Date().getFullYear();
+---
+
+  <footer
+  class="shell relative mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-line py-8"
+>
+  <p class="font-mono text-[0.6875rem] text-mute">
+    © {year} {person.name} · Built with Astro, deployed on GitHub Pages
+  </p>
+  <div class="flex items-center gap-6">
+    <a
+      href={asset("snake")}
+      class="link font-mono text-[0.6875rem] text-mute hover:text-accent"
+      title="Or press it on the keyboard"
+    >
+      Play Reconcile
+      <span class="tracking-[0.2em] opacity-60">↑↑↓↓←→←→BA</span>
+    </a>
+    <a href="#top" class="link font-mono text-[0.6875rem] text-mute">
+      Back to top
+    <svg
+      class="h-3 w-3"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+        <path d="M12 19V5M6 11l6-6 6 6"></path>
+      </svg>
+    </a>
+  </div>
+</footer>

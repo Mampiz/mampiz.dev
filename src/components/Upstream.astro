@@ -1,0 +1,50 @@
+---
+import { upstream } from "../data/site";
+import SectionHead from "./SectionHead.astro";
+
+/** Escape, then turn `backticks` into inline code. */
+function richText(input: string): string {
+  return input
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(
+      /`([^`]+)`/g,
+      '<code class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[0.85em] text-accent">$1</code>',
+    );
+}
+---
+
+<section id="upstream" class="scroll-mt-24 border-t border-line py-16 md:py-24">
+  <SectionHead title="Other people's" ghost="code" blurb={upstream.blurb} />
+
+  <ul class="mt-10 grid gap-3">
+    {
+      upstream.items.map((item, i) => (
+        <li class="reveal" style={`--reveal-delay:${i * 70}ms`}>
+          <a
+            href={item.url}
+            rel="noopener"
+            class="group block rounded-2xl border border-line bg-surface p-6 transition-colors duration-300 hover:border-accent/50 md:p-7"
+          >
+            <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+              <span class="font-mono text-xs text-mute">
+                {item.org}/{item.project} · #{item.number}
+              </span>
+              <span class="flex items-center gap-2.5">
+                <span class="rounded-full border border-accent/40 bg-accent-soft px-2.5 py-0.5 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-accent">
+                  Merged
+                </span>
+                <span class="label">{item.date}</span>
+              </span>
+            </div>
+            <h3 class="mt-4 font-hero text-lg font-semibold leading-snug tracking-[-0.01em] transition-colors duration-300 group-hover:text-accent md:text-xl">
+              {item.title}
+            </h3>
+            <p class="mt-3 max-w-2xl text-[0.9375rem] leading-relaxed text-dim" set:html={richText(item.note)} />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>

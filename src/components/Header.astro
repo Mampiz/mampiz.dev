@@ -1,6 +1,6 @@
 ---
-import { nav, person } from "../data/site";
-import { asset, siteBase } from "../lib/url";
+import { nav } from "../data/site";
+import { siteBase } from "../lib/url";
 
 interface Props {
   /** True on pages other than the index, where the anchors have no targets. */
@@ -10,150 +10,91 @@ interface Props {
 const { standalone = false } = Astro.props;
 const home = `${siteBase}/`;
 const link = (hash: string) => (standalone ? `${home}${hash}` : hash);
+
+// Stroke icons, 24px grid. Hand-written so the nav needs no icon library.
+const icons: Record<string, string> = {
+  home: "M3 11.5 12 4l9 7.5M5.5 10v9.5h13V10",
+  work: "M3 7a2 2 0 0 1 2-2h4l2 2.5h8a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z",
+  merge: "M7 4v10M7 14a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM17 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM17 10v1.5a3 3 0 0 1-3 3H7",
+  team: "M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM2.5 20c.6-3.4 3.2-5 6.5-5s5.9 1.6 6.5 5M16 4.4a3.5 3.5 0 0 1 0 6.2M18 15.3c1.9.6 3.1 2.1 3.5 4.7",
+  stack: "m12 3 9 5-9 5-9-5ZM3 12.5l9 5 9-5M3 16.5l9 5 9-5",
+  about: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4.5 20.5c.8-3.6 3.7-5.5 7.5-5.5s6.700 1.900 7.500 5.500",
+  mail: "M3.5 6.5h17v11h-17ZM3.5 7l8.500 6.500L20.500 7",
+};
 ---
 
 <div class="progress" data-progress aria-hidden="true"></div>
 
 <header
   data-header
-  class="fixed inset-x-0 top-0 z-50 transition-all duration-300 data-[scrolled]:border-b data-[scrolled]:border-line data-[scrolled]:bg-bg/75 data-[scrolled]:backdrop-blur-xl"
+  class="pointer-events-none fixed inset-x-0 top-3 z-50 flex justify-center px-3 md:top-5"
 >
-  <div class="shell flex h-16 items-center justify-between gap-6 md:h-[4.5rem]">
-    <a
-      href={standalone ? home : "#top"}
-      class="group flex items-baseline gap-2.5 font-display text-[0.95rem] font-semibold tracking-tight"
-    >
-      <span
-        class="inline-block h-1.5 w-1.5 rounded-full bg-accent transition-transform duration-300 group-hover:scale-150"
-      ></span>
-      {person.short}
-      <span class="hidden font-mono text-[0.6875rem] font-normal text-mute sm:inline"
-        >/ {person.handle}</span
-      >
-    </a>
-
-    <nav class="hidden items-center gap-1 md:flex" aria-label="Sections">
-      {
-        nav.map((item) => (
-          <a
-            href={link(item.href)}
-            data-nav-link
-            class="rounded-full px-3.5 py-1.5 text-sm text-dim transition-colors duration-200 hover:text-ink data-[active]:bg-surface data-[active]:text-ink"
-          >
-            {item.label}
-          </a>
-        ))
-      }
-      <a
-        href={asset("snake")}
-        class="ml-1 inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent-soft px-3.5 py-1.5 text-sm text-accent transition-colors duration-200 hover:border-accent/60"
-      >
-        <svg
-          class="h-3.5 w-3.5"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          aria-hidden="true"
-        >
-          <path d="M8 5.5v13l11-6.5z" />
-        </svg>
-        Play
-      </a>
-    </nav>
-
-    <div class="flex items-center gap-2">
-      <button
-        data-theme-toggle
-        type="button"
-        aria-label="Toggle colour theme"
-        class="grid h-9 w-9 place-items-center rounded-full border border-line text-dim transition-colors duration-200 hover:border-accent/50 hover:text-ink"
-      >
-        <svg
-          class="hidden h-[15px] w-[15px] dark-only"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.7"
-          stroke-linecap="round"
-          aria-hidden="true"
-        >
-          <circle cx="12" cy="12" r="4"></circle>
-          <path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"
-          ></path>
-        </svg>
-        <svg
-          class="hidden h-[15px] w-[15px] light-only"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.7"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path>
-        </svg>
-      </button>
-
-      <a
-        href={`mailto:${person.email}`}
-        class="btn btn-primary hidden !px-4 !py-2 !text-[0.8125rem] md:inline-flex"
-      >
-        Contact
-      </a>
-
-      <button
-        data-menu-button
-        type="button"
-        aria-expanded="false"
-        aria-label="Open menu"
-        class="grid h-9 w-9 place-items-center rounded-full border border-line text-dim md:hidden"
-      >
-        <svg
-          class="h-4 w-4"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.7"
-          stroke-linecap="round"
-          aria-hidden="true"
-        >
-          <path d="M4 8h16M4 16h16"></path>
-        </svg>
-      </button>
-    </div>
-  </div>
-</header>
-
-<div
-  data-menu
-  class="pointer-events-none fixed inset-0 z-40 translate-y-[-8px] bg-bg/95 opacity-0 backdrop-blur-xl transition-all duration-300 data-[open]:pointer-events-auto data-[open]:translate-y-0 data-[open]:opacity-100 md:hidden"
->
-  <nav class="shell flex h-full flex-col justify-center gap-2" aria-label="Sections">
+  <nav
+    class="pill pointer-events-auto flex items-center gap-0.5 rounded-full p-1.5"
+    aria-label="Sections"
+  >
     {
-      nav.map((item, i) => (
+      nav.map((item) => (
         <a
           href={link(item.href)}
-          class="border-b border-line-soft py-5 font-display text-3xl tracking-tight text-ink"
+          data-nav-link
+          title={item.label}
+          aria-label={item.label}
+          class="grid h-9 w-9 place-items-center rounded-full text-dim transition-colors duration-200 hover:text-ink data-[active]:bg-accent-soft data-[active]:text-accent md:h-10 md:w-10"
         >
-          <span class="label mr-4 align-middle">0{i + 1}</span>
-          {item.label}
+          <svg
+            class="h-[18px] w-[18px]"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d={icons[item.icon]} />
+          </svg>
         </a>
       ))
     }
-    <a
-      href={asset("snake")}
-      class="flex items-center gap-3 border-b border-line-soft py-5 font-display text-3xl tracking-tight text-accent"
+
+    <span class="mx-1 h-5 w-px bg-line" aria-hidden="true"></span>
+
+    <button
+      data-theme-toggle
+      type="button"
+      aria-label="Toggle colour theme"
+      title="Theme"
+      class="grid h-9 w-9 place-items-center rounded-full text-dim transition-colors duration-200 hover:text-ink md:h-10 md:w-10"
     >
-      <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M8 5.5v13l11-6.5z" />
+      <svg
+        class="hidden h-[17px] w-[17px] dark-only"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.7"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"
+        ></path>
       </svg>
-      Play
-    </a>
-    <a href={`mailto:${person.email}`} class="btn btn-primary mt-8 justify-center">
-      Contact
-    </a>
+      <svg
+        class="hidden h-[17px] w-[17px] light-only"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.7"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path>
+      </svg>
+    </button>
   </nav>
-</div>
+</header>
 
 <style>
   :global(html[data-theme="dark"]) .light-only {

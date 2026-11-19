@@ -316,6 +316,42 @@ export const projects: Project[] = [
   },
 ];
 
+/** The figure strip under the headline. Every value comes from a project's own benchmark. */
+export const heroStats = [
+  { value: "50 ms", label: "p95 reconcile at 250 objects" },
+  { value: "0.6 ms", label: "admission p50, cache warm" },
+  { value: "0.910", label: "mAP@0.5 on 101 bird species" },
+  { value: "2", label: "pull requests merged upstream" },
+];
+
+/**
+ * Pull requests merged into other people's projects. Only merged ones are
+ * listed: an open pull request is a request, not a contribution.
+ */
+export const upstream = {
+  blurb: "Two merged. The maintainers did not have to say yes.",
+  items: [
+    {
+      project: "kubebuilder",
+      org: "kubernetes-sigs",
+      number: 6198,
+      title: "CronJob tutorial tests use a fixed clock",
+      note: "The book's controller tests depended on the wall clock and failed now and then in `make test-book`. A fixed clock removed the flake.",
+      url: "https://github.com/kubernetes-sigs/kubebuilder/pull/6198",
+      date: "Nov 2026",
+    },
+    {
+      project: "terraform-provider-azurerm",
+      org: "hashicorp",
+      number: 33891,
+      title: "AKS docs: service_mesh_profile.revisions and net_ipv4_tcp_tw_reuse",
+      note: "The documentation for two arguments of `azurerm_kubernetes_cluster` disagreed with the provider. The fix closed two open issues.",
+      url: "https://github.com/hashicorp/terraform-provider-azurerm/pull/33891",
+      date: "Nov 2026",
+    },
+  ],
+};
+
 export const toolbox = [
   {
     title: "Every day, happily",
@@ -367,16 +403,18 @@ export const teamwork = {
     "A shared error helper the other controllers reused, so the API stopped inventing a new error shape per route.",
     "The GoogleTest suite for user deletion: seven cases over three fixtures, covering admin versus neighbour, invalid and missing ids, and a delete attempted across community boundaries.",
     "The claim-achievement endpoint in the gamification system.",
-    "Reviewing and merging teammates' pull requests, including the ratings and notification work.",
+    "The frontend side of the same features: the achievements page, user ratings and the rate-a-neighbour flow.",
+    "Reviewing teammates' pull requests.",
   ],
   metrics: [
-    { value: "10", label: "pull requests merged" },
+    { value: "16", label: "pull requests merged" },
     { value: "8", label: "people on the team" },
     { value: "7", label: "test cases on one endpoint" },
     { value: "3", label: "repos, one product" },
   ],
   stack: [
     "C++20",
+    "TypeScript",
     "Crow",
     "libpqxx",
     "PostgreSQL",
@@ -424,9 +462,11 @@ export const archive = [
 ];
 
 export const nav = [
-  { href: "#work", label: "Work" },
-  { href: "#team", label: "Team" },
-  { href: "#stack", label: "Stack" },
-  { href: "#about", label: "About" },
-  { href: "#contact", label: "Contact" },
+  { href: "#top", label: "Home", icon: "home" },
+  { href: "#work", label: "Work", icon: "work" },
+  { href: "#upstream", label: "Open source", icon: "merge" },
+  { href: "#team", label: "Team", icon: "team" },
+  { href: "#stack", label: "Stack", icon: "stack" },
+  { href: "#about", label: "About", icon: "about" },
+  { href: "#contact", label: "Contact", icon: "mail" },
 ];
