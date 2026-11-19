@@ -66,7 +66,6 @@ export const projects: Project[] = [
       { value: "p95 50ms", label: "reconcile at 250 objects" },
       { value: "81 / 100%", label: "controller / webhook coverage" },
       { value: "41 MB", label: "RSS under full load" },
-      { value: "2", label: "API versions, converted" },
     ],
     stack: [
       "Go",
@@ -113,7 +112,6 @@ export const projects: Project[] = [
     ],
     metrics: [
       { value: "~75 s", label: "cold bootstrap to ready cluster" },
-      { value: "1 form", label: "to repo + CI + live pods" },
       { value: "3", label: "CI suites, e2e included" },
     ],
     stack: [
@@ -167,7 +165,6 @@ export const projects: Project[] = [
     metrics: [
       { value: "0.6 ms", label: "admission p50, cache warm" },
       { value: "SLSA L3", label: "the builder signs, not the repo" },
-      { value: "45.9 MiB", label: "RSS under load" },
       { value: "10", label: "design records, one retracting another" },
     ],
     stack: [
@@ -216,7 +213,6 @@ export const projects: Project[] = [
     metrics: [
       { value: "v1.0.0", label: "released, with SBOM and provenance" },
       { value: "49", label: "smoke checks, no API key needed" },
-      { value: "8", label: "Prometheus metrics exported" },
       { value: "scratch", label: "base image: no shell, no libc" },
     ],
     stack: [
@@ -271,7 +267,6 @@ export const projects: Project[] = [
       { value: "101", label: "bird species detected" },
       { value: "0.910", label: "mAP@0.5, own validation split" },
       { value: "4", label: "operating modes, one backend" },
-      { value: "20 min", label: "max async video, cached by hash" },
     ],
     stack: [
       "Python",
@@ -352,6 +347,25 @@ export const upstream = {
   ],
 };
 
+/**
+ * The day job, kept short and limited to what the public CV already says.
+ * Same habit as the projects, one layer further down the stack.
+ */
+export const dayJob = {
+  company: "NXP Semiconductors",
+  role: "Software Engineer, automotive",
+  since: "Apr 2025",
+  place: "Barcelona",
+  lead: "By day I work close to the metal, on the software that sits between a car's ECU and the Linux side of the same vehicle.",
+  points: [
+    "A low-latency message broker in C and C++ between an AUTOSAR ECU stack and Embedded Linux: more than ten concurrent services on a 10 ms cycle.",
+    "A diagnostics, intrusion detection and logging subsystem collecting faults from 16 subsystems, which cut incident triage time by 40%.",
+    "Certificate and artifact signing with a hardware security engine, as part of a secure boot chain of trust.",
+  ],
+  stack: ["C", "C++", "AUTOSAR", "PXROS-HR", "Embedded Linux", "CAN", "UDS"],
+  before: "Before that, an internship at TTTech Auto (2024 to 2025) on AUTOSAR components and vehicle diagnostics.",
+};
+
 export const toolbox = [
   {
     title: "Every day, happily",
@@ -378,6 +392,10 @@ export const toolbox = [
       "Sigstore",
     ],
   },
+  {
+    title: "At work",
+    items: ["C", "C++", "AUTOSAR", "Embedded Linux", "CAN", "UDS"],
+  },
   { title: "Currently learning", items: ["Terraform"] },
 ];
 
@@ -395,7 +413,7 @@ export const teamwork = {
     "Neighbours trade services with each other, paid in a currency that only exists inside the app.",
   body: [
     "Built by a team of eight during the degree. Neighbours publish the services they offer or need, pay each other in the platform's own currency, rate the result, and collect achievements along the way. Three repositories make one product: a C++20 REST API on Crow, a TypeScript frontend, and a devops repository holding the Compose files, the NGINX configuration and the database seeds for every environment.",
-    "It is the only C++ backend I have worked on, and the one place where I learned what a code review actually costs when six people are touching the same controllers.",
+    "It is the only C++ web backend I have worked on, and the one place where I learned what a code review actually costs when six people are touching the same controllers.",
   ],
   did: [
     "The user endpoints: fetch a user, delete a user by id, and delete your own account, each with its own authorisation rule.",
@@ -409,8 +427,6 @@ export const teamwork = {
   metrics: [
     { value: "16", label: "pull requests merged" },
     { value: "8", label: "people on the team" },
-    { value: "7", label: "test cases on one endpoint" },
-    { value: "3", label: "repos, one product" },
   ],
   stack: [
     "C++20",

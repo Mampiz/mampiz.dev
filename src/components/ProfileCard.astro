@@ -34,16 +34,6 @@ const socials = [
   class="profile-card relative overflow-hidden rounded-3xl p-5 sm:p-6 lg:sticky lg:top-24 lg:p-7"
   aria-label={`About ${person.short}`}
 >
-  <!-- Dashed arc in the corner, as on the reference card. Desktop only. -->
-  <svg
-    class="pointer-events-none absolute -left-12 -top-12 hidden h-52 w-52 text-[color:var(--c-card-accent)] lg:block"
-    viewBox="0 0 200 200"
-    fill="none"
-    aria-hidden="true"
-  >
-    <circle cx="100" cy="100" r="92" stroke="currentColor" stroke-width="2.5" stroke-dasharray="6 7" stroke-linecap="round"></circle>
-  </svg>
-
   <div class="relative flex items-center gap-5 lg:flex-col lg:items-stretch lg:gap-6">
     <img
       src={asset("media/avatar.jpg")}
@@ -61,18 +51,6 @@ const socials = [
       <p class="dim mt-1.5 font-mono text-[0.6875rem] uppercase tracking-[0.16em]">
         {person.role} · {person.location}
       </p>
-      <!-- A small round badge on a dashed path: the reconcile loop, our version of the flame. -->
-      <div class="relative mt-5 hidden h-10 lg:block" aria-hidden="true">
-        <svg class="absolute inset-y-0 -left-7 h-full w-[calc(50%+1.75rem)] text-[color:var(--c-card-accent)]" viewBox="0 0 150 40" preserveAspectRatio="none" fill="none">
-          <path d="M0 38 Q 60 40 128 20" stroke="currentColor" stroke-width="2.5" stroke-dasharray="6 7" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
-        </svg>
-        <span class="absolute left-1/2 top-1/2 grid h-9 w-9 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-[color:var(--c-card-accent)] text-white">
-          <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 11a8 8 0 0 0-14.9-3M4 5v4h4M4 13a8 8 0 0 0 14.9 3M20 19v-4h-4"></path>
-          </svg>
-        </span>
-      </div>
-
       <p class="dim mt-3 hidden text-sm leading-relaxed lg:block">
         {person.tagline}
       </p>
