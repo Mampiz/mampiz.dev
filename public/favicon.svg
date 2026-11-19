@@ -1,4 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="15" fill="#08090b"/>
-  <path d="M14 46V18h7.6l10.4 16.6L42.4 18H50v28h-7.2V31.4L33.6 46h-3.2L21.2 31.4V46z" fill="#f26a37"/>
+  <!-- A reconcile loop closing on a pod: the control loop the projects are built around. -->
+  <rect width="64" height="64" rx="16" fill="#f26a37"/>
+  <path d="M47.04 37.47A16 16 0 1 1 44.26 21.72" fill="none" stroke="#141210" stroke-width="5.5" stroke-linecap="round"/>
+  <path d="M49.4 27.85 48.5 17.7 39.9 25.4Z" fill="#141210" stroke="#141210" stroke-width="2" stroke-linejoin="round"/>
+  <rect x="26" y="26" width="12" height="12" rx="3.5" fill="#c5ff41" stroke="#141210" stroke-width="2.5"/>
 </svg>

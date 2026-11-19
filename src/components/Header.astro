@@ -35,8 +35,18 @@ const icons: Record<string, string> = {
     class="pill pointer-events-auto flex items-center gap-1 rounded-2xl p-1.5 md:gap-2 md:px-3"
     aria-label="Sections"
   >
+    <a
+      href={link("#top")}
+      data-nav-link
+      title="Home"
+      aria-label="Home"
+      class="grid h-9 w-9 place-items-center rounded-full md:h-10 md:w-10"
+    >
+      <img src={asset("favicon.svg")} alt="" width="26" height="26" class="h-[26px] w-[26px]" />
+    </a>
+
     {
-      nav.map((item) => (
+      nav.filter((item) => item.icon !== "home").map((item) => (
         <a
           href={link(item.href)}
           data-nav-link
