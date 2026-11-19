@@ -7,24 +7,24 @@
 --------------------------------------------------------------------------- */
 
 :root {
-  --c-bg: #08090b;
-  --c-bg-soft: #0d0f13;
-  --c-surface: #121519;
-  --c-surface-2: #171b21;
-  --c-line: #23282f;
-  --c-line-soft: #191d23;
-  --c-text: #f1f2f4;
-  --c-dim: #a3aab4;
-  --c-mute: #6b727c;
-  --c-accent: #8b9bff;
-  --c-accent-ink: #0a0b12;
-  --c-accent-soft: rgba(139, 155, 255, 0.14);
-  --c-glow: rgba(139, 155, 255, 0.28);
-  --c-ghost: #454b58;
-  --c-card: #11141a;
-  --c-card-ink: #f1f2f4;
-  --c-card-dim: #a3aab4;
-  --c-card-line: #262c35;
+  --c-bg: #141210;
+  --c-bg-soft: #191714;
+  --c-surface: #1e1c19;
+  --c-surface-2: #262320;
+  --c-line: #34312c;
+  --c-line-soft: #292622;
+  --c-text: #f4f0e9;
+  --c-dim: #b0aa9f;
+  --c-mute: #7d776c;
+  --c-accent: #f26a37;
+  --c-accent-ink: #14110d;
+  --c-accent-soft: rgba(242, 106, 55, 0.15);
+  --c-glow: rgba(242, 106, 55, 0.26);
+  --c-ghost: #4a453d;
+  --c-card: #1e1c19;
+  --c-card-ink: #f4f0e9;
+  --c-card-dim: #b0aa9f;
+  --c-card-line: #34312c;
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03) inset,
     0 24px 60px -30px rgba(0, 0, 0, 0.9);
@@ -33,33 +33,31 @@
 }
 
 /*
- * Light is warm paper, not screen white. The page sits around 91% lightness so
- * a full screen of it is easy to look at, cards are a shade lighter so they
- * still lift, and the whole ramp is warmed slightly to keep the cool blue of
- * the screenshots from making everything look grey and dead.
+ * Light is cream, not screen white: warm enough to sit with the terracotta
+ * accent, light enough to read a full screen of it.
  */
 :root[data-theme="light"] {
-  --c-bg: #e9e7e2;
-  --c-bg-soft: #e0ddd7;
-  --c-surface: #f7f6f3;
-  --c-surface-2: #eeece7;
-  --c-line: #d1cdc5;
-  --c-line-soft: #dedad3;
-  --c-text: #1a1916;
-  --c-dim: #55524b;
-  --c-mute: #817d75;
-  --c-accent: #3b41c4;
+  --c-bg: #f5efe4;
+  --c-bg-soft: #ece4d4;
+  --c-surface: #fffaf0;
+  --c-surface-2: #f0e8d8;
+  --c-line: #dccfb8;
+  --c-line-soft: #e8dcc7;
+  --c-text: #1d1a14;
+  --c-dim: #5a5242;
+  --c-mute: #8a806b;
+  --c-accent: #c4431b;
   --c-accent-ink: #ffffff;
-  --c-accent-soft: rgba(59, 65, 196, 0.09);
-  --c-glow: rgba(59, 65, 196, 0.16);
-  --c-ghost: #c6c2b9;
-  --c-card: #f7f6f3;
-  --c-card-ink: #1a1916;
-  --c-card-dim: #55524b;
-  --c-card-line: #d1cdc5;
+  --c-accent-soft: rgba(196, 67, 27, 0.1);
+  --c-glow: rgba(196, 67, 27, 0.16);
+  --c-ghost: #d9ceb8;
+  --c-card: #fffaf0;
+  --c-card-ink: #1d1a14;
+  --c-card-dim: #5a5242;
+  --c-card-line: #dccfb8;
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.7) inset,
-    0 18px 38px -26px rgba(40, 36, 30, 0.4);
+    0 18px 38px -26px rgba(60, 44, 20, 0.35);
 
   color-scheme: light;
 }
