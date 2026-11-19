@@ -321,9 +321,9 @@ export const projects: Project[] = [
 
 /** The figure strip under the headline. Every value comes from a project's own benchmark. */
 export const heroStats = [
-  { value: "50ms", label: "p95 reconcile, 250 objects" },
-  { value: "0.6ms", label: "admission check, p50" },
-  { value: "0.910", label: "mAP on 101 bird species" },
+  { value: "50 ms", label: "to reconcile 250 objects, p95" },
+  { value: "0.6 ms", label: "to check where an image was built" },
+  { value: "0.910", label: "mAP across 101 bird species" },
 ];
 
 /**
