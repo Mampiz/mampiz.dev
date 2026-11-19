@@ -21,10 +21,10 @@
   --c-accent-soft: rgba(139, 155, 255, 0.14);
   --c-glow: rgba(139, 155, 255, 0.28);
   --c-ghost: #454b58;
-  --c-card: #efeff1;
-  --c-card-ink: #0d0f13;
-  --c-card-dim: #55595f;
-  --c-card-line: #d7d8dc;
+  --c-card: #11141a;
+  --c-card-ink: #f1f2f4;
+  --c-card-dim: #a3aab4;
+  --c-card-line: #262c35;
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03) inset,
     0 24px 60px -30px rgba(0, 0, 0, 0.9);
@@ -53,10 +53,10 @@
   --c-accent-soft: rgba(59, 65, 196, 0.09);
   --c-glow: rgba(59, 65, 196, 0.16);
   --c-ghost: #c6c2b9;
-  --c-card: #1c1b18;
-  --c-card-ink: #f4f2ee;
-  --c-card-dim: #aaa69d;
-  --c-card-line: #36342f;
+  --c-card: #f7f6f3;
+  --c-card-ink: #1a1916;
+  --c-card-dim: #55524b;
+  --c-card-line: #d1cdc5;
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.7) inset,
     0 18px 38px -26px rgba(40, 36, 30, 0.4);
@@ -360,6 +360,7 @@
 .profile-card {
   background: var(--c-card);
   color: var(--c-card-ink);
+  border: 1px solid var(--c-card-line);
   box-shadow: var(--shadow-card);
 }
 
