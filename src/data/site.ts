@@ -56,7 +56,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "webapp-operator",
-    art: "covers/webapp-operator.svg",
+    art: "covers/webapp-operator.webp",
     index: "01",
     name: "webapp-operator",
     kicker: "Kubernetes operator",
@@ -104,7 +104,7 @@ export const projects: Project[] = [
   },
   {
     slug: "idp-backstage",
-    art: "covers/idp-backstage.svg",
+    art: "covers/idp-backstage.webp",
     index: "02",
     name: "idp-backstage",
     kicker: "Internal developer platform",
@@ -157,7 +157,7 @@ export const projects: Project[] = [
   },
   {
     slug: "provenance-gate",
-    art: "covers/provenance-gate.svg",
+    art: "covers/provenance-gate.webp",
     index: "03",
     name: "provenance-gate",
     kicker: "Admission control · Supply chain",
@@ -206,7 +206,7 @@ export const projects: Project[] = [
   },
   {
     slug: "llm-gateway",
-    art: "covers/llm-gateway.svg",
+    art: "covers/llm-gateway.webp",
     index: "04",
     name: "llm-gateway",
     kicker: "Concurrent Go proxy",
@@ -261,7 +261,7 @@ export const projects: Project[] = [
   },
   {
     slug: "birdvision",
-    art: "covers/birdvision.svg",
+    art: "covers/birdvision.webp",
     index: "05",
     name: "BirdVision",
     kicker: "Computer vision platform · Final degree project",
