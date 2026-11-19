@@ -21,10 +21,11 @@
   --c-accent-soft: rgba(242, 106, 55, 0.15);
   --c-glow: rgba(242, 106, 55, 0.26);
   --c-ghost: #4a453d;
-  --c-card: #1e1c19;
-  --c-card-ink: #f4f0e9;
-  --c-card-dim: #b0aa9f;
-  --c-card-line: #34312c;
+  --c-card: #fbf7ef;
+  --c-card-ink: #1d1a14;
+  --c-card-dim: #5a5242;
+  --c-card-line: #e3d9c6;
+  --c-card-accent: #c4431b;
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03) inset,
     0 24px 60px -30px rgba(0, 0, 0, 0.9);
@@ -55,6 +56,7 @@
   --c-card-ink: #1d1a14;
   --c-card-dim: #5a5242;
   --c-card-line: #dccfb8;
+  --c-card-accent: #c4431b;
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.7) inset,
     0 18px 38px -26px rgba(60, 44, 20, 0.35);

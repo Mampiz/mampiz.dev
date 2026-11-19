@@ -1,6 +1,6 @@
 ---
 import { nav } from "../data/site";
-import { siteBase } from "../lib/url";
+import { asset, siteBase } from "../lib/url";
 
 interface Props {
   /** True on pages other than the index, where the anchors have no targets. */
@@ -59,6 +59,17 @@ const icons: Record<string, string> = {
     }
 
     <span class="mx-1 h-5 w-px bg-line" aria-hidden="true"></span>
+
+    <a
+      href={asset("snake")}
+      title="Play Reconcile"
+      aria-label="Play Reconcile, a small game"
+      class="grid h-9 w-9 place-items-center rounded-full text-accent transition-colors duration-200 hover:bg-accent-soft md:h-10 md:w-10"
+    >
+      <svg class="h-[17px] w-[17px]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M8 5.5v13l11-6.5z"></path>
+      </svg>
+    </a>
 
     <button
       data-theme-toggle
