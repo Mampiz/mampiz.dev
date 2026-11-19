@@ -3,14 +3,14 @@ import { archive, person } from "../data/site";
 import SectionHead from "./SectionHead.astro";
 ---
 
-<section id="archive" class="scroll-mt-24 border-t border-line py-16 md:py-24">
+<section id="archive" class="section scroll-mt-10">
   <SectionHead
     title="Older"
     ghost="and smaller"
     blurb="Older and smaller repositories, kept public because deleting your history is a strange thing to do."
   />
 
-  <ul class="mt-10 border-t border-line">
+  <ul class="mt-5 border-t border-line">
     {
       archive.map((item, i) => (
         <li class="reveal" style={`--reveal-delay:${i * 60}ms`}>

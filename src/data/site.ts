@@ -8,6 +8,7 @@ export const person = {
   github: "https://github.com/Mampiz",
   linkedin: "https://linkedin.com/in/josep-mampel-marques",
   tagline: "Some Go, some Kubernetes, one bird detector.",
+  cardLine: "A software engineer who builds the parts nobody notices until they fail.",
   summary:
     "A Kubernetes operator, an internal developer platform, admission control tied to build provenance, a concurrent Go gateway and a computer vision pipeline.",
 } as const;
@@ -313,10 +314,9 @@ export const projects: Project[] = [
 
 /** The figure strip under the headline. Every value comes from a project's own benchmark. */
 export const heroStats = [
-  { value: "50 ms", label: "p95 reconcile at 250 objects" },
-  { value: "0.6 ms", label: "admission p50, cache warm" },
-  { value: "0.910", label: "mAP@0.5 on 101 bird species" },
-  { value: "2", label: "pull requests merged upstream" },
+  { value: "50ms", label: "p95 reconcile, 250 objects" },
+  { value: "0.6ms", label: "admission check, p50" },
+  { value: "0.910", label: "mAP on 101 bird species" },
 ];
 
 /**
@@ -346,6 +346,40 @@ export const upstream = {
     },
   ],
 };
+
+/** Work history, as on the CV. Only facts that are already public there. */
+export const experience = [
+  {
+    company: "NXP Semiconductors",
+    role: "Software Engineer, automotive",
+    dates: "Apr 2025 - Present",
+    text: "A low-latency message broker in C and C++ between an AUTOSAR ECU stack and Embedded Linux, more than ten services on a 10 ms cycle. Also the diagnostics and logging subsystem for 16 others, and artifact signing inside a secure boot chain.",
+  },
+  {
+    company: "TTTech Auto",
+    role: "Software Engineer, intern",
+    dates: "Sep 2024 - Mar 2025",
+    text: "VIN generation and end-to-end sync between AUTOSAR components and the flash bootloader, which cut misalignment incidents in test flashing by 95%. Thirty AUTOSAR defects fixed with root cause analysis on test benches.",
+  },
+  {
+    company: "EPSEVG, UPC",
+    role: "Computer Engineering degree",
+    dates: "2021 - 2026",
+    text: "Finished with BirdVision, a bird detection platform built with a local environmental association. Before that, a team of eight on Neby.",
+  },
+];
+
+/** The tools grid: logo, name and what it is for. Logos are Simple Icons (CC0). */
+export const tools = [
+  { name: "Go", note: "What I write", icon: "go", color: "#00ADD8" },
+  { name: "Kubernetes", note: "What it runs on", icon: "kubernetes", color: "#326CE5" },
+  { name: "Docker", note: "How it ships", icon: "docker", color: "#2496ED" },
+  { name: "Helm", note: "How it installs", icon: "helm", color: "#0F1689" },
+  { name: "Prometheus", note: "How I know it works", icon: "prometheus", color: "#E6522C" },
+  { name: "Grafana", note: "How I show it", icon: "grafana", color: "#F46800" },
+  { name: "GitHub Actions", note: "Every push, every repo", icon: "githubactions", color: "#2088FF" },
+  { name: "Terraform", note: "Learning it now", icon: "terraform", color: "#844FBA" },
+];
 
 /**
  * The day job, kept short and limited to what the public CV already says.
@@ -480,9 +514,7 @@ export const archive = [
 export const nav = [
   { href: "#top", label: "Home", icon: "home" },
   { href: "#work", label: "Work", icon: "work" },
-  { href: "#upstream", label: "Open source", icon: "merge" },
-  { href: "#team", label: "Team", icon: "team" },
-  { href: "#stack", label: "Stack", icon: "stack" },
-  { href: "#about", label: "About", icon: "about" },
+  { href: "#experience", label: "Experience", icon: "briefcase" },
+  { href: "#tools", label: "Tools", icon: "wrench" },
   { href: "#contact", label: "Contact", icon: "mail" },
 ];

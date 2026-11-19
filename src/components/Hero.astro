@@ -2,37 +2,25 @@
 import { heroStats, person } from "../data/site";
 ---
 
-<section id="top" class="relative scroll-mt-24 pb-16 pt-4 md:pb-20 lg:pt-2">
-  <h1
-    class="hero-title reveal text-[clamp(2.5rem,7.4vw,5.4rem)]"
-    style="--reveal-delay:40ms"
-  >
-    I build things,
-    <span class="ghost">then try to break them.</span>
+<section id="top" class="scroll-mt-24">
+  <h1 class="hero-title reveal text-[clamp(3.25rem,7.65vw,6.875rem)]">
+    Software
+    <span class="ghost">Engineer</span>
   </h1>
 
-  <p
-    class="reveal mt-8 max-w-xl text-[1.0625rem] leading-relaxed text-dim md:text-lg"
-    style="--reveal-delay:120ms"
-  >
-    Controllers, internal platforms and pipelines, mostly written in Go. An
-    operator that keeps a workload matching its spec, a portal that turns a form
-    into a running service, an admission gate that refuses an image built by the
-    wrong workflow, a vision pipeline that names the birds at a drinking trough.
-    Everything here runs, and every number is measured.
+  <p class="reveal mt-6 max-w-[30rem] text-[1.0625rem] leading-relaxed text-dim" style="--reveal-delay:80ms">
+    I build things, then try to break them. Controllers, internal platforms and
+    pipelines, mostly in Go, and every number on this page is measured.
   </p>
 
-  <dl
-    class="reveal mt-12 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4"
-    style="--reveal-delay:180ms"
-  >
+  <dl class="reveal mt-14 flex flex-wrap gap-x-10 gap-y-8" style="--reveal-delay:140ms">
     {
       heroStats.map((stat) => (
         <div>
-          <dt class="font-hero text-[clamp(1.9rem,4vw,2.9rem)] font-bold leading-none tracking-[-0.03em]">
+          <dt class="font-hero text-[clamp(2.75rem,4.9vw,4.375rem)] font-semibold leading-[1.2] tracking-[-0.01em]">
             {stat.value}
           </dt>
-          <dd class="mt-2.5 font-mono text-[0.6875rem] uppercase leading-snug tracking-[0.08em] text-mute">
+          <dd class="max-w-[9rem] text-base uppercase leading-[1.2] tracking-[-0.01em] text-mute">
             {stat.label}
           </dd>
         </div>
@@ -40,78 +28,40 @@ import { heroStats, person } from "../data/site";
     }
   </dl>
 
-  <div
-    class="reveal mt-12 grid gap-3 sm:grid-cols-2"
-    style="--reveal-delay:240ms"
-  >
-    <a
-      href="#work"
-      class="group flex min-h-40 flex-col justify-between rounded-2xl bg-accent p-5 text-accent-ink transition-transform duration-300 hover:-translate-y-0.5"
-    >
-      <svg
-        class="h-6 w-6"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.7"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
+  <div class="reveal mt-[4.5rem] grid gap-[30px] sm:grid-cols-[300fr_366fr]" style="--reveal-delay:200ms">
+    <a href="#work" class="tile bg-[#f26a37] text-white">
+      <svg class="pattern" viewBox="0 0 300 240" preserveAspectRatio="xMidYMid slice" fill="none" aria-hidden="true">
+        <path d="M-10 225 C 60 205, 120 160, 170 140 S 160 40, 230 25 S 300 30, 320 20" stroke="rgba(150,40,10,0.28)" stroke-width="3"></path>
+        <path d="M-10 140 C 50 120, 110 90, 150 60 S 220 -10, 320 10" stroke="rgba(150,40,10,0.18)" stroke-width="3"></path>
+      </svg>
+      <svg class="relative h-9 w-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="m12 3 9 5-9 5-9-5ZM3 12.5l9 5 9-5M3 16.5l9 5 9-5"></path>
       </svg>
-      <span class="flex items-end justify-between gap-4">
-        <span class="font-hero text-lg font-bold uppercase leading-tight tracking-[-0.01em]">
-          Go, Kubernetes,<br />and what runs on it
+      <span class="relative mt-6">
+        <span class="block font-hero text-[1.5rem] font-medium uppercase leading-[1.1]">
+          Controllers, platforms, pipelines
         </span>
-        <svg
-          class="h-5 w-5 shrink-0 transition-transform duration-300 group-hover:translate-x-1"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.9"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M5 12h14M13 6l6 6-6 6"></path>
-        </svg>
+        <span class="go mt-4 ml-auto" aria-hidden="true">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+        </span>
       </span>
     </a>
 
-    <a
-      href={person.github}
-      rel="me noopener"
-      class="group flex min-h-40 flex-col justify-between rounded-2xl bg-ink p-5 text-bg transition-transform duration-300 hover:-translate-y-0.5"
-    >
-      <svg
-        class="h-6 w-6"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.7"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-        <path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"></path>
+    <a href={person.github} rel="me noopener" class="tile bg-[#c5ff41] text-[#141210]">
+      <svg class="pattern" viewBox="0 0 366 240" preserveAspectRatio="xMidYMid slice" fill="none" aria-hidden="true">
+        <path d="M-10 40 L 60 -10 L 110 150 L 180 20 L 230 230 L 300 60 L 380 200" stroke="rgba(60,210,170,0.55)" stroke-width="3" stroke-linejoin="round"></path>
+        <path d="M-10 120 L 40 60 L 100 250 L 170 110 L 240 260 L 320 120 L 380 260" stroke="rgba(60,210,170,0.4)" stroke-width="3" stroke-linejoin="round"></path>
       </svg>
-      <span class="flex items-end justify-between gap-4">
-        <span class="font-hero text-lg font-bold uppercase leading-tight tracking-[-0.01em]">
-          Read the code,<br />it is all public
+      <svg class="relative h-9 w-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M3 9h18M9 21V9"></path>
+      </svg>
+      <span class="relative mt-6">
+        <span class="block font-hero text-[1.5rem] font-medium uppercase leading-[1.1]">
+          Go, Kubernetes, Helm, Prometheus
         </span>
-        <svg
-          class="h-5 w-5 shrink-0 transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.9"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M7 17 17 7M9 7h8v8"></path>
-        </svg>
+        <span class="go mt-4 ml-auto" aria-hidden="true">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"></path></svg>
+        </span>
       </span>
     </a>
   </div>

@@ -6,6 +6,7 @@ import Hero from "../components/Hero.astro";
 import SectionHead from "../components/SectionHead.astro";
 import WorkIndex from "../components/WorkIndex.astro";
 import ProjectSection from "../components/ProjectSection.astro";
+import Experience from "../components/Experience.astro";
 import Upstream from "../components/Upstream.astro";
 import TeamWork from "../components/TeamWork.astro";
 import Stack from "../components/Stack.astro";
@@ -20,25 +21,32 @@ import { projects } from "../data/site";
 <Layout>
   <Header />
 
+  <!-- Proportions taken from the reference: a 344px card, 100px of air, a 696px column. -->
   <div
-    class="shell pt-20 md:pt-28 lg:grid lg:grid-cols-[19.5rem_minmax(0,1fr)] lg:items-start lg:gap-14 xl:grid-cols-[21rem_minmax(0,1fr)] xl:gap-20"
+    class="mx-auto w-full max-w-[calc(1140px+3rem)] px-6 pt-24 lg:grid lg:grid-cols-[300px_minmax(0,1fr)] lg:items-start lg:gap-14 lg:pt-[160px] xl:grid-cols-[344px_minmax(0,1fr)] xl:gap-[100px]"
   >
     <ProfileCard />
 
-    <main class="mt-12 min-w-0 lg:mt-0">
+    <main class="mt-14 min-w-0 lg:mt-0">
       <Hero />
 
-      <section id="work" class="scroll-mt-24 border-t border-line pt-16 md:pt-24">
-        <SectionHead title="Selected" ghost="work" />
+      <section id="work" class="section scroll-mt-10">
+        <SectionHead title="Recent" ghost="projects" />
         <WorkIndex />
-        <div class="mt-6">
+      </section>
+
+      <Experience />
+      <Stack />
+      <Upstream />
+
+      <section class="section" aria-label="Case studies">
+        <SectionHead title="How they" ghost="work" />
+        <div class="mt-5">
           {projects.map((project) => <ProjectSection project={project} />)}
         </div>
       </section>
 
-      <Upstream />
       <TeamWork />
-      <Stack />
       <About />
       <Archive />
       <PlayBanner />

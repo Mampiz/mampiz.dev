@@ -1,32 +1,42 @@
 ---
-import { toolbox } from "../data/site";
+import { tools, toolbox } from "../data/site";
+import { asset } from "../lib/url";
 import SectionHead from "./SectionHead.astro";
+
+// Everything that is not already in the grid, as a quiet line of chips.
+const inGrid = new Set(tools.map((t) => t.name));
+const rest = toolbox
+  .flatMap((group) => group.items)
+  .filter((item, i, all) => !inGrid.has(item) && all.indexOf(item) === i);
 ---
 
-<section id="stack" class="scroll-mt-24 border-t border-line py-16 md:py-24">
-  <SectionHead
-    title="Toolbox"
-    ghost="by use"
-    blurb="Sorted by how often I actually reach for it."
-  />
+<section id="tools" class="section scroll-mt-10">
+  <SectionHead title="Daily" ghost="tools" />
 
-  <div class="mt-12 grid gap-px overflow-hidden rounded-2xl border border-line bg-line">
+  <ul class="mt-5 grid gap-x-6 sm:grid-cols-2">
     {
-      toolbox.map((group, i) => (
-        <div
-          class="reveal grid gap-5 bg-bg px-6 py-8 md:grid-cols-[15rem_1fr] md:items-start md:gap-10 md:px-8"
-          style={`--reveal-delay:${i * 70}ms`}
-        >
-          <h3 class="font-mono text-xs uppercase tracking-[0.16em] text-mute">
-            {group.title}
-          </h3>
-          <ul class="flex flex-wrap gap-2">
-            {group.items.map((item) => (
-              <li class="chip !text-[0.75rem] !text-ink">{item}</li>
-            ))}
-          </ul>
-        </div>
+      tools.map((tool, i) => (
+        <li class="reveal flex items-center gap-4 px-4 py-4" style={`--reveal-delay:${(i % 2) * 60}ms`}>
+          <span class="grid h-[60px] w-[60px] shrink-0 place-items-center rounded-lg bg-white">
+            <span
+              class="block h-8 w-8"
+              style={`background:${tool.color};-webkit-mask:url(${asset(`icons/${tool.icon}.svg`)}) center/contain no-repeat;mask:url(${asset(`icons/${tool.icon}.svg`)}) center/contain no-repeat`}
+              aria-hidden="true"
+            ></span>
+          </span>
+          <span>
+            <span class="block font-hero text-[1.375rem] font-semibold leading-tight tracking-[-0.01em]">
+              {tool.name}
+            </span>
+            <span class="block text-base text-mute">{tool.note}</span>
+          </span>
+        </li>
       ))
     }
-  </div>
+  </ul>
+
+  <p class="reveal mt-8 px-4 text-sm uppercase tracking-[0.06em] text-mute">Also</p>
+  <ul class="reveal mt-3 flex flex-wrap gap-2 px-4" aria-label="Other tools">
+    {rest.map((item) => <li class="chip !text-[0.75rem]">{item}</li>)}
+  </ul>
 </section>

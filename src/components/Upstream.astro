@@ -15,10 +15,10 @@ function richText(input: string): string {
 }
 ---
 
-<section id="upstream" class="scroll-mt-24 border-t border-line py-16 md:py-24">
-  <SectionHead title="Other people's" ghost="code" blurb={upstream.blurb} />
+<section id="upstream" class="section scroll-mt-10">
+  <SectionHead title="Open" ghost="source" blurb={upstream.blurb} />
 
-  <ul class="mt-10 grid gap-3">
+  <ul class="mt-5 grid gap-3">
     {
       upstream.items.map((item, i) => (
         <li class="reveal" style={`--reveal-delay:${i * 70}ms`}>
