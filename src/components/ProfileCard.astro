@@ -16,6 +16,12 @@ const socials = [
     fill: true,
   },
   {
+    label: "Source of this site",
+    href: `${person.github}/mampiz.dev`,
+    path: "m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16",
+    fill: false,
+  },
+  {
     label: "Email",
     href: `mailto:${person.email}`,
     path: "M3.5 6.5h17v11h-17ZM3.5 7l8.5 6.5L20.5 7",
@@ -28,6 +34,16 @@ const socials = [
   class="profile-card relative overflow-hidden rounded-3xl p-5 sm:p-6 lg:sticky lg:top-24 lg:p-7"
   aria-label={`About ${person.short}`}
 >
+  <!-- Dashed arc in the corner, as on the reference card. Desktop only. -->
+  <svg
+    class="pointer-events-none absolute -left-12 -top-12 hidden h-52 w-52 text-accent lg:block"
+    viewBox="0 0 200 200"
+    fill="none"
+    aria-hidden="true"
+  >
+    <circle cx="100" cy="100" r="92" stroke="currentColor" stroke-width="2.5" stroke-dasharray="6 7" stroke-linecap="round"></circle>
+  </svg>
+
   <div class="relative flex items-center gap-5 lg:flex-col lg:items-stretch lg:gap-6">
     <img
       src={asset("media/avatar.jpg")}
@@ -45,6 +61,18 @@ const socials = [
       <p class="dim mt-1.5 font-mono text-[0.6875rem] uppercase tracking-[0.16em]">
         {person.role} · {person.location}
       </p>
+      <!-- A small round badge on a dashed path: the reconcile loop, our version of the flame. -->
+      <div class="relative mt-5 hidden h-10 lg:block" aria-hidden="true">
+        <svg class="absolute inset-y-0 -left-7 h-full w-[calc(50%+1.75rem)] text-accent" viewBox="0 0 150 40" preserveAspectRatio="none" fill="none">
+          <path d="M0 38 Q 60 40 128 20" stroke="currentColor" stroke-width="2.5" stroke-dasharray="6 7" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+        </svg>
+        <span class="absolute left-1/2 top-1/2 grid h-9 w-9 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-accent text-accent-ink">
+          <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 11a8 8 0 0 0-14.9-3M4 5v4h4M4 13a8 8 0 0 0 14.9 3M20 19v-4h-4"></path>
+          </svg>
+        </span>
+      </div>
+
       <p class="dim mt-3 hidden text-sm leading-relaxed lg:block">
         {person.tagline}
       </p>
@@ -52,7 +80,7 @@ const socials = [
   </div>
 
   <ul
-    class="relative mt-5 flex items-center gap-2 lg:mt-6 lg:justify-center"
+    class="relative mt-5 flex items-center gap-4 lg:mt-5 lg:justify-center"
     aria-label="Links"
   >
     {
@@ -63,11 +91,10 @@ const socials = [
             rel={item.href.startsWith("http") ? "me noopener" : undefined}
             aria-label={item.label}
             title={item.label}
-            class="grid h-10 w-10 place-items-center rounded-full border text-[color:var(--c-card-dim)] transition-colors duration-200 hover:border-accent hover:text-accent"
-            style="border-color: var(--c-card-line)"
+            class="grid h-9 w-9 place-items-center rounded-full text-accent transition-transform duration-200 hover:scale-110"
           >
             <svg
-              class="h-[18px] w-[18px]"
+              class="h-[22px] w-[22px]"
               viewBox="0 0 24 24"
               fill={item.fill ? "currentColor" : "none"}
               stroke={item.fill ? "none" : "currentColor"}
