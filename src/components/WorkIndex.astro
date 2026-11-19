@@ -83,19 +83,19 @@ import { asset, thumb } from "../lib/url";
       const dx = tx - x;
       x += dx * 0.16;
       y += (ty - y) * 0.16;
-      const tilt = Math.max(-12, Math.min(12, dx * 0.25));
-      box.style.transform = `translate(${x - 150}px, ${y - 156}px) rotate(${tilt}deg)`;
+      const tilt = Math.max(-8, Math.min(8, dx * 0.2));
+      box.style.transform = `translate(${x - 95}px, ${y - 99}px) rotate(${tilt}deg)`;
       raf = on || Math.abs(dx) > 0.5 ? requestAnimationFrame(step) : 0;
     };
     document.querySelectorAll<HTMLAnchorElement>("[data-peek]").forEach((row) => {
       row.addEventListener("pointerenter", (e) => {
         img.src = row.dataset.peek!;
-        if (!on) { x = tx = e.clientX + 190; y = ty = e.clientY; }
+        if (!on) { x = tx = e.clientX + 175; y = ty = e.clientY; }
         on = true;
         box.classList.add("is-on");
         if (!raf) raf = requestAnimationFrame(step);
       });
-      row.addEventListener("pointermove", (e) => { tx = e.clientX + 190; ty = e.clientY; });
+      row.addEventListener("pointermove", (e) => { tx = e.clientX + 175; ty = e.clientY; });
       row.addEventListener("pointerleave", () => { on = false; box.classList.remove("is-on"); });
     });
   }
