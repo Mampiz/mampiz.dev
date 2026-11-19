@@ -45,6 +45,8 @@ export type Project = {
   stack: string[];
   media: MediaItem[];
   cover: Cover;
+  /** Illustrated cover for the project index, under public/covers. */
+  art?: string;
   repo?: string;
   demo?: string;
   diagram?: string;
@@ -54,6 +56,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "webapp-operator",
+    art: "covers/webapp-operator.svg",
     index: "01",
     name: "webapp-operator",
     kicker: "Kubernetes operator",
@@ -101,6 +104,7 @@ export const projects: Project[] = [
   },
   {
     slug: "idp-backstage",
+    art: "covers/idp-backstage.svg",
     index: "02",
     name: "idp-backstage",
     kicker: "Internal developer platform",
@@ -153,6 +157,7 @@ export const projects: Project[] = [
   },
   {
     slug: "provenance-gate",
+    art: "covers/provenance-gate.svg",
     index: "03",
     name: "provenance-gate",
     kicker: "Admission control · Supply chain",
@@ -201,6 +206,7 @@ export const projects: Project[] = [
   },
   {
     slug: "llm-gateway",
+    art: "covers/llm-gateway.svg",
     index: "04",
     name: "llm-gateway",
     kicker: "Concurrent Go proxy",
@@ -255,6 +261,7 @@ export const projects: Project[] = [
   },
   {
     slug: "birdvision",
+    art: "covers/birdvision.svg",
     index: "05",
     name: "BirdVision",
     kicker: "Computer vision platform · Final degree project",

@@ -1,6 +1,6 @@
 ---
 import { projects } from "../data/site";
-import { thumb } from "../lib/url";
+import { asset, thumb } from "../lib/url";
 ---
 
 <ul class="mt-5" aria-label="Projects">
@@ -12,7 +12,17 @@ import { thumb } from "../lib/url";
           class="index-row group flex items-start gap-5 rounded-xl px-4 py-5"
         >
           <span class="relative block h-[100px] w-[96px] shrink-0 overflow-hidden rounded-lg bg-surface-2 sm:h-[135px] sm:w-[130px]">
-            {project.cover.kind === "image" ? (
+            {project.art ? (
+              <img
+                src={asset(project.art)}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                width="130"
+                height="135"
+                class="thumb h-full w-full object-cover"
+              />
+            ) : project.cover.kind === "image" ? (
               <img
                 src={thumb(project.cover.src)}
                 alt=""
